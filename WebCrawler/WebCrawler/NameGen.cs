@@ -29,6 +29,7 @@ namespace WebCrawler
             "서윤", "지우", "윤서", "채원", "하윤"//, "지아", "은서"
         };
 
+        // Generate random name
         public string randomName()
         {
             Random random = new Random();
@@ -39,24 +40,21 @@ namespace WebCrawler
                 return family[random.Next() % family.Length] + mNames[random.Next() % fNames.Length];
         }
 
-        public void clearState()
-        {
-            famNum = sexNum = namNum = 0;
-        }
-
-        public void clearState(int famNum, int sexNum, int namNum)
+        // Clear state
+        public void clearState(int famNum=0, int sexNum=0, int namNum=0)
         {
             this.famNum = famNum;
             this.sexNum = sexNum;
             this.namNum = namNum;
         }
 
+        // Generate name with previous state
         public string getName()
         {
             if (famNum < 0 || sexNum < 0 || namNum < 0)
                 clearState();
 
-            if (famNum >= family.Length && sexNum >= 2)
+            if (famNum >= family.Length || sexNum >= 2)
             {
                 clearState();
                 return null;
@@ -78,5 +76,12 @@ namespace WebCrawler
             else
                 return family[famNum] + fNames[namNum++];
         }
-    }
-}
+        
+        // Property of states
+        public int LengthFamily() { return family.Length; }
+        public int LengthMName() { return mNames.Length; }
+        public int LengthFName() { return fNames.Length; }
+
+    }// End of class
+
+}// End of namespace

@@ -49,7 +49,10 @@ namespace WebCrawler
             // Return Value.
             List<string> IDList = new List<string>();
             string ID;
+            // To check it is valid id.
             long tmp;
+
+            // Parsing.
             for (;
                 ptr < responseFromServer.Length && ptr != -1;
                 ptr = responseFromServer.IndexOf(name, ptr))
@@ -60,6 +63,7 @@ namespace WebCrawler
                 //                        ^ptr
                 ptr -= 15 + 8;
 
+                // ID is fifteen digit
                 ID = responseFromServer.Substring(ptr, 15);
 
                 // Is number?
@@ -126,6 +130,8 @@ namespace WebCrawler
 
             // Return Value.
             List<string> LikeList = new List<string>();
+
+            // Parsing.
             for (;
                 ptr < responseFromServer.Length && ptr != -1;
                 ptr = responseFromServer.IndexOf("\">", ptr) + 2)
@@ -151,7 +157,8 @@ namespace WebCrawler
             return LikeList;
         }
 
-        /* Incomplete
+        /* Incomplete method of ip bypass
+         * 
          * HTTP request headers
          * IP address  x
          * Long URLs   x
@@ -175,7 +182,7 @@ namespace WebCrawler
             //request.Proxy = proxy;
             /////////////////////////////////////////////////////////////////////Error!
 
-            //policy
+            // Policy.
             System.Net.Cache.HttpRequestCachePolicy policy =
                 new System.Net.Cache.HttpRequestCachePolicy(System.Net.Cache.HttpCacheAgeControl.MaxAge, TimeSpan.MinValue);
             request.CachePolicy = policy;
@@ -205,6 +212,6 @@ namespace WebCrawler
             return null;
         }
 
+    }// End of class
 
-    }//end of class
-}//end of namespace
+}// End of namespace
