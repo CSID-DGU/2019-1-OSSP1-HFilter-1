@@ -105,6 +105,7 @@ def makeHistogram(path, xLabel="items", yLabel="nums", ignore=10):
 
     #hst.fontSettings()
 
+    # Making Histogram...
     # Font setting
     plt.rc('font', family="Malgun Gothic");
     # Histogram tilte

@@ -3,10 +3,13 @@
 import sys
 import MLModule
 
+# Main
 path = input("경로를 입력하세요 : ")
 
+# Get sorted info
 path = MLModule.makeLabelByTxt(path)
 
+# Error
 if path == None:
     sys.exit(1)
 
