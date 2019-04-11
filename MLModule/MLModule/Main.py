@@ -1,5 +1,6 @@
 #Copyright 2019. Jeongwon Her. All rights reserved.
 
+import sys
 import MLModule
 
 path = input("경로를 입력하세요 : ")
@@ -7,7 +8,7 @@ path = input("경로를 입력하세요 : ")
 path = MLModule.makeLabelByTxt(path)
 
 if path == None:
-    exit(499)
+    sys.exit(1)
 
 select = input("히스토그램을 그립니까?(Yes/No) ")
 

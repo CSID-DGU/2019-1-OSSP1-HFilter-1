@@ -57,12 +57,14 @@ def makeLabelByTxt(path):
     file.close
     output.close
     return outPath
-#End of makeLabelByTxt
+# End of makeLabelByTxt
 
-import matplotlib.pyplot as plt #그래프 그려줌
-import NamGyunSWTeam as hst
-
+# Draw Histogram with sorted txt
 def makeHistogram(path, xLabel="items", yLabel="nums", ignore=10):
+    # Histogram lib
+    import matplotlib.pyplot as plt 
+    #import NamGyunSWTeam as hst
+
     # Open file
     file = open(path, 'r', encoding='utf8')
     if file is None:
@@ -101,14 +103,21 @@ def makeHistogram(path, xLabel="items", yLabel="nums", ignore=10):
         title = title[title.find('\\')+1:]
     title = title[:len(title)-10]
 
-    hst.fontSettings()
+    #hst.fontSettings()
 
+    # Font setting
+    plt.rc('font', family="Malgun Gothic");
+    # Histogram tilte
     plt.title(title)
+    # x, y label name
     plt.xlabel(xLabel)
     plt.ylabel(yLabel)
+    # Make x, y
     x = (list)(labels.keys())
     y = (list)(labels.values())
+    # Insert data
     plt.bar(x, y)
+    # Set range
     plt.ylim(ignore-2, y[0]+2)
     plt.show()
 # End of makeHistogram

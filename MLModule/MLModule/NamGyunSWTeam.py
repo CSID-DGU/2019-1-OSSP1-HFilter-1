@@ -10,37 +10,6 @@
 import matplotlib.pyplot as plt #그래프 그려줌
 import matplotlib.font_manager as fm
 import numpy as np #수학 함수
-#남자 좋아요 수를 넣을 딕셔너리
-manLikesCnt ={} 
-#남자 딕셔너리 키 저장할 리스트
-manKeysList=[]   
-#남자 딕셔너리 벨류값을 저장할 리스트
-manValuesList=[] 
-#남자 히스토그램 키
-manHistKeys=[]
-#남자 히스토그램 값
-manHistValues=[]
-#디폴트경로를 쓸지,사용자 경로를 쓸지
-selectRoute=3
-#히스토그램 2명이상만 띄우기 위한 변수
-histCnt=0
-#남자 파일을 열었는지 유무
-manFileOpen=False
-#여자 파일을 열었는지 유무
-womanFileOpen=False
-#반복을 종료할지 말지
-roof = "Yes"
-#여자 좋아요 수를 넣을 딕셔너리
-womanLikesCnt ={} 
-#여자 딕셔너리 키 저장할 리스트
-womanKeysList=[]   
-#여자 딕셔너리 벨류값을 저장할 리스트
-womanValuesList=[] 
-#여자 히스토그램 키
-womanHistKeys=[]
-#여자 히스토그램 값
-womanHistValues=[]
-
 
 #히스토그램 한글 깨짐방지  전역설정,맑은글씨체
 def fontSettings() :
