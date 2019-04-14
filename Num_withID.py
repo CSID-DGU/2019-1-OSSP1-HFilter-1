@@ -1,7 +1,6 @@
 ##Copyright 2019. All rights reserved.
-#2017112109 Hyun Sang Yeop
 #OSSP in Dongguk University
-
+#2019-1-OSSP1-HFilter-1
 
 # coding: utf-8
 
@@ -12,7 +11,7 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 import sys
 
 # Draw Histogram with sorted txt
-def makeHistogram(path, xLabel="items", yLabel="nums", ignore=10):
+def makeHistogram_sub_IDkorean(path, xLabel="items", yLabel="nums", ignore=10):
     # Histogram lib
     import matplotlib.pyplot as plt 
     #import NamGyunSWTeam as hst
@@ -35,11 +34,14 @@ def makeHistogram(path, xLabel="items", yLabel="nums", ignore=10):
         # Remove Newline character
         line = line.replace("\n", "")
         
-        # Jump id
+      ######  
+        # ID는 무시
         if "  ID" in line:
             continue
-        
+            
+        # "명"은 뺴야함
         line = line.replace("명", "")
+      ######  
         # Parsing
         ptr=line.rfind(' ')
 
@@ -227,15 +229,11 @@ def makeLabelByTxt_withID(path):
 
 
 # Main
-#path = input("남자파일 경로 입력하세요 : ")
-
-# Get sorted info
-#path = MLModule.makeLabelByTxt(path)
-#path = makeLabelByTxt(path)
 path_men = input("남자파일 경로 입력하세요 : ")
 path_women = input("여자파일 경로 입력하세요 : ")
 path_union = merge_file_union(path_men, path_women)
-    
+
+# ID와 함께 구합니다.
 path_men = makeLabelByTxt_withID(path_men)
 path_women = makeLabelByTxt_withID(path_women)
 path_union =makeLabelByTxt_withID(path_union)
@@ -247,10 +245,9 @@ if path_men == None or path_women == None or path_union == None:
 select = input("히스토그램을 그립니까?(Yes/No) ")
 
 if select=="예" or select=="Yes" or select=="yes"    or select=="1" or select=="o" or select=="ok":
-    #MLModule.makeHistogram(path, "페이지", "좋아요")
-    makeHistogram(path_men, "페이지", "좋아요")
-    makeHistogram(path_women, "페이지", "좋아요")
-    makeHistogram(path_union, "페이지", "좋아요")
+    makeHistogram_sub_IDkorean(path_men, "페이지", "좋아요")
+    makeHistogram_sub_IDkorean(path_women, "페이지", "좋아요")
+    makeHistogram_sub_IDkorean(path_union, "페이지", "좋아요")
 
 # End of Main
 
