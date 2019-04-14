@@ -1,3 +1,4 @@
+
 import matplotlib.pyplot as plt #그래프 그려줌
 import matplotlib.font_manager as fm
 import numpy as np #수학 함수
