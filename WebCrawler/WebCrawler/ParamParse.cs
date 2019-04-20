@@ -66,53 +66,63 @@ namespace WebCrawler
             
             bool error = false;
 
-            string[] ret = new string[3];
+            string[] ret=null; 
 
-            int fileArgLoc = 1;
+            int pathLoc = 1;
 
-            switch (args[0])
+            if (args.Length != 0)
             {
-                // Get random name
-                case "-R":
-                case "-r":
-                    ret[0] = "r";
-                    break;
+                switch (args[0])
+                {
+                    // Get random name
+                    case "-R":
+                    case "-r":
+                        ret = new string[2];
+                        ret[0] = "r";
+                        break;
 
-                // Get specified name
-                case "-S":
-                case "-s":
-                    ret[0] = "s";
-                    fileArgLoc = 2;
+                    // Get specified name
+                    case "-S":
+                    case "-s":
+                        ret = new string[3];
+                        ret[0] = "s";
+                        pathLoc = 2;
 
-                    // Check valid ID
-                    ret[1] = args[1];
-                    long check;
-                    if(!long.TryParse(ret[1], out check))
-                    {
-                        Console.WriteLine("Invalid ID");
+                        // Check valid ID
+                        ret[1] = args[1];
+                        long check;
+                        if (!long.TryParse(ret[1], out check))
+                        {
+                            Console.WriteLine("Invalid ID");
+                            error = true;
+                        }
+                        break;
+
+                    // Normal mode
+                    case "-N":
+                    case "-n":
+                        // will be update
+                        ret = new string[4];
                         error = true;
-                    }
-                    break;
+                        break;
 
-                // Normal mode
-                case "-N":
-                case "-n":
-                    // will be update
-                    error = true;
-                    break;
+                    default:
+                        error = true;
+                        break;
+                }
 
-                default:
-                    error = true;
-                    break;
+                // Out file path
+                // Not specified path
+                if (args.Length <= pathLoc)
+                    ret[pathLoc] = System.IO.Directory.GetCurrentDirectory() + @"\out.txt";
+                // Specified path
+                else
+                    ret[pathLoc] = args[pathLoc];
             }
-
-            // Out file path
-            if (args.Length <= fileArgLoc)
-                ret[fileArgLoc] = System.IO.Directory.GetCurrentDirectory()+@"\out.txt";
             else
-                ret[fileArgLoc] = args[fileArgLoc];
+                error = true;
 
-            if (args.Length == 0 || args.Length > 2 || error)
+            if (error)
             {
                 Console.WriteLine("Please enter right command.");
                 Console.WriteLine("Usage:   -r <path>");
