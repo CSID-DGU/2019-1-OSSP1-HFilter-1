@@ -4,6 +4,7 @@
 def writeFileByList(path, listArray):
     # Open output file
     output = open(path, 'w', encoding='utf8')
+    # Error
     if output is None:
         print("Invalid path")
         return 1

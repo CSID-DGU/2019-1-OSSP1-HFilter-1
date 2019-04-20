@@ -202,7 +202,8 @@ def learningModule(listA, listB, ignore, learnCnt=10, hst=False):
 # End of learningModule
 
 
-# Make Individual data Dictionary with txt
+# Make Individual data with txt
+# Return Dictionary
 def makeIndiv(path):
 
     # Open file
@@ -254,6 +255,53 @@ def makeIndiv(path):
 
     return indiv
 # End of MakeIndiv
+
+
+# Determination by learned weight
+def dtrHuman(hList, wDiction):
+    intsec = np.intersect1d(np.array(hList), np.array((list)(wDiction.keys())))
+    weight = 0
+    for i in range(0, intsec.size):
+        weight += wDiction[intsec[i]]
+
+    return weight
+# End of dtrHuman
+
+
+# Make Module with txt
+# Return Dictionary
+def makeModule(path):
+        # Dictionary
+    weight = {}
+
+    # Open file
+    try:
+        file = open(path, 'r', encoding='utf8')
+    except:
+        print("Invalid path")
+        return {}
+    
+    # Read file
+    while True:
+        line = file.readline()
+        if not line:
+            break
+
+        # Remove Newline character
+        line = line.replace(" \n", "")
+
+        # Parsing
+        ptr=line.rfind(' ')
+
+        # Add dictionary
+        weight[line[:ptr]] = (float)(line[ptr+1:])
+    # End of while
+
+    # Close file
+    file.close
+
+    return weight
+# End of makeModule
 
 
 
