@@ -37,7 +37,7 @@ namespace WebCrawler
             if (random.Next() % 2 == 0)
                 return family[random.Next() % family.Length] + mNames[random.Next() % mNames.Length];
             else
-                return family[random.Next() % family.Length] + mNames[random.Next() % fNames.Length];
+                return family[random.Next() % family.Length] + fNames[random.Next() % fNames.Length];
         }
 
         // Clear state
