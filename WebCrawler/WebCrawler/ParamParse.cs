@@ -73,11 +73,13 @@ namespace WebCrawler
             switch (args[0])
             {
                 // Get random name
+                case "-R":
                 case "-r":
                     ret[0] = "r";
                     break;
 
                 // Get specified name
+                case "-S":
                 case "-s":
                     ret[0] = "s";
                     fileArgLoc = 2;
@@ -90,6 +92,13 @@ namespace WebCrawler
                         Console.WriteLine("Invalid ID");
                         error = true;
                     }
+                    break;
+
+                // Normal mode
+                case "-N":
+                case "-n":
+                    // will be update
+                    error = true;
                     break;
 
                 default:
