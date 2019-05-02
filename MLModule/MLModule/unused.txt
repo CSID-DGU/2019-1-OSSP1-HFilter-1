@@ -1,0 +1,13 @@
+	# Sort
+        sortLabels = sorted(pf.items(), key=lambda x: x[1], reverse=True)
+
+        # Slice
+        igcnt=0
+        for igcnt in range(0, len(sortLabels)):
+            if((float)(sortLabels[igcnt][1]) < gap): break
+
+//////////////////////////////////////////////////////////////////
+        strWeight=[]
+        for j in range(0, len(weightA)):
+            if list(weightA.values())[j] >=1.0 or list(weightA.values())[j]<=-1.0:
+                strWeight.append(list(weightA.keys())[j])

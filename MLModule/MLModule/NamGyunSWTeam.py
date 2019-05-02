@@ -9,7 +9,7 @@
 #여자그래프추가 남자,여자 합친거 추가
 import matplotlib.pyplot as plt #그래프 그려줌
 import matplotlib.font_manager as fm
-import numpy as np #수학 함수
+#수학 함수
 
 #히스토그램 한글 깨짐방지  전역설정,맑은글씨체
 def fontSettings() :

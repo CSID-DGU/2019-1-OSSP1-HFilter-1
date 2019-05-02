@@ -2,6 +2,7 @@
 
 # Write output file
 def writeFileByList(path, listArray):
+    """path:save path   listArray:nd array"""
     # Open output file
     output = open(path, 'w', encoding='utf8')
     # Error

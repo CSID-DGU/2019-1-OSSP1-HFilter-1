@@ -1,11 +1,11 @@
-#Copyright 2019. Jeongwon Her. All rights reserved.
+#Copyright 2019.  Jeongwon Her.  All rights reserved.
 #Last modified 19/04/14
-
 import numpy as np
 
 # Make Label by txt
 # Return List
 def makeLabel(path, ignore=1):
+    """path:input path  ignore:label will be ignored under integer"""
 
     # Dictionary
     labels = {}
@@ -46,7 +46,7 @@ def makeLabel(path, ignore=1):
 
     # Slice
     for i in range(0, len(sortLabels)):
-        if((int)(sortLabels[i][1])<ignore): break
+        if((int)(sortLabels[i][1]) < ignore): break
     sliced = np.array(sortLabels[:i])
 
     return sliced
@@ -54,15 +54,15 @@ def makeLabel(path, ignore=1):
 
 
 # Draw Histogram with numpyArray
-# Args = ["title", "xLabel", "yLabel", lowVal]
 def makeHistogram(listArray, args=None):
+    """listArray:nd array   args:["title", "xLabel", "yLabel", lowVal]"""
 
     # Histogram lib
     import matplotlib.pyplot as plt
 
     # Making Histogram...
     # Font setting
-    plt.rc('font', family="Malgun Gothic");
+    plt.rc('font', family="Malgun Gothic")
 
     # Make title, xLabel, yLabel
     if args == None or len(args) != 4:
@@ -78,12 +78,12 @@ def makeHistogram(listArray, args=None):
     plt.ylabel(args[2])
 
     # Make x y list
-    x=listArray[:,0].tolist()
-    y=listArray[:,1].astype(float)
+    x = listArray[:,0].tolist()
+    y = listArray[:,1].astype(float)
     # Insert data
     plt.bar(x, y)
     # Set range
-    plt.ylim((int)(args[3])-2, y[0]+2)
+    plt.ylim((int)(args[3]) - 2, y[0] + 2)
     plt.show()
 # End of makeHistogram
 
@@ -92,87 +92,115 @@ def makeHistogram(listArray, args=None):
 def learningModule(listA, listB, ignore, learnCnt=10, hst=False):
 
     # Get labels
-    originA=makeLabel(listA, ignore)
-    originB=makeLabel(listB, ignore)
-    if originA.size == 0 or originB.size == 0:
+    originA = makeLabel(listA, ignore)
+    if originA.size == 0:
+        return 1
+    originB = makeLabel(listB, ignore)
+    if originB.size == 0:
         return 1
 
     # Make different set of labels and init weight
     weightA = {}
-    weightB = {}
     labelA = np.array(np.setdiff1d(originA[:,0], originB[:,0]))
     for i in range(0,labelA.size):
-        weightA[labelA[i]]=1.0
-    labelB = np.array(np.setdiff1d(originB[:,0], originA[:,0]))
-    for i in range(0,labelB.size):
-        weightB[labelB[i]]=1.0
+        weightA[labelA[i]] = 1.0
 
     # Make individual data(dictionary)
-    indivA=makeIndiv(listA)
-    indivB=makeIndiv(listB)
-    if len(indivA) == 0 or len(indivB) == 0:
+    indivA = makeIndiv(listA)
+    if len(indivA) == 0:
+        return 1
+    indivB = makeIndiv(listB)
+    if len(indivB) == 0:
         return 1
 
     # Learning
     for cnt in range(0,learnCnt):
+        gap = ignore
+        if gap<1: gap=1
+        
+        print("Learning " + str(cnt + 1), end='')
 
         # Wrong guesses union
         # Positive False, Negative True
         pf, nt = {}, {}
+        pfSum, ntSum = 0, 0
 
         # In positive list
         for i in range(0, len(indivA)):
-            tmp = np.array((list)(indivA.values())[i])
-            intsec = np.intersect1d(tmp, np.array((list)(weightA.keys())))
-            weight = 0
+            aList = list(indivA.values())[i]
+            
             # Calculate weight
-            for j in range(0, intsec.size):
-                weight += weightA[intsec[j]]
+            weight = 0
+            for j in range(0, len(aList)):
+                if aList[j] in weightA:
+                    weight += weightA[aList[j]]
+
             # When positive false
             # Threshold 1.0
             if weight < 1.0:
-                for j in range(0, tmp.size):
-                    if tmp[j] not in pf:
+                pfSum+=1
+                for j in range(0, len(aList)):
+                    if aList[j] not in pf:
                         # it's first appearance
-                        pf[tmp[j]] = 1
+                        pf[aList[j]] = 1
                     else:
-                        # Add 1 using the indivA[i][j] as a key
-                        pf[tmp[j]] += 1
+                        # Add 1 using the aList[j] as a key
+                        pf[aList[j]] += 1
         # End of for
+
+        pfKeys=(list)(pf.keys())
+        pfVals=(list)(pf.values())
 
         # Weight adjustment
         for i in range(0, len(pf)):
-            if list(pf.keys())[i] in weightA:
-                weightA[(list)(pf.keys())[i]] = (float)(list(pf.values())[i]) / ignore + (float)(weightA[list(pf.keys())[i]])
+            if pfKeys[i] in weightA:
+                weightA[pfKeys[i]] = (float)(pfVals[i]) / gap + (float)(weightA[pfKeys[i]])
             else:
-                weightA[(list)(pf.keys())[i]] = (float)(list(pf.values())[i]) / ignore
+                weightA[pfKeys[i]] = (float)(pfVals[i]) / gap
+
+            if weightA[pfKeys[i]]==0:
+                del weightA[pfKeys[i]]
 
         # In negative list
         for i in range(0, len(indivB)):
-            tmp = np.array((list)(indivB.values())[i])
-            intsec = np.intersect1d(tmp, np.array((list)(weightA.keys())))
-            weight = 0
+            bList = list(indivB.values())[i]
+
             # Calculate weight
-            for j in range(0, intsec.size):
-                weight += weightA[intsec[j]]
+            weight = 0
+            for j in range(0, len(bList)):
+                if bList[j] in weightA:
+                    weight += weightA[bList[j]]
             # When negative true
             # Threshold 1.0
             if weight > 1.0:
-                for j in range(0, tmp.size):
-                    if tmp[j] not in nt:
+                ntSum+=1
+                for j in range(0, len(bList)):
+                    if bList[j] not in nt:
                         # it's first appearance
-                        nt[tmp[j]] = 1
+                        nt[bList[j]] = 1
                     else:
-                        # Add 1 using the indivB[i][j] as a key
-                        nt[tmp[j]] += 1
+                        # Add 1 using the bList[j] as a key
+                        nt[bList[j]] += 1
         # End of for
+
+        ntKeys=(list)(nt.keys())
+        ntVals=(list)(nt.values())
 
         # Weight adjustment
         for i in range(0, len(nt)):
-            if list(nt.keys())[i] in weightA:
-                weightA[(list)(nt.keys())[i]] = -(float)(list(nt.values())[i]) / 10 + (float)(weightA[list(nt.keys())[i]])
+            if ntKeys[i] in weightA:
+                weightA[ntKeys[i]] = -(float)(ntVals[i]) / gap + (float)(weightA[ntKeys[i]])
             else:
-                weightA[(list)(nt.keys())[i]] = -(float)(list(nt.values())[i]) / 10
+                weightA[ntKeys[i]] = -(float)(ntVals[i]) / gap
+
+            if weightA[ntKeys[i]]==0:
+                del weightA[ntKeys[i]]
+
+
+        print(" P-Gess:" + str(pfSum * 100 / len(indivA)) + "% N-Gess:" + str(ntSum * 100 / len(indivB)) + "%")
+        # 100% correct
+        if pfSum == 0 and ntSum==0:
+            break
     # End of learning
 
     # Sort
@@ -183,19 +211,28 @@ def learningModule(listA, listB, ignore, learnCnt=10, hst=False):
     outPath = FileRW.makePathStr(listA, 'module.txt')
     FileRW.writeFileByList(outPath, np.array(weightAList))
 
+    
+    # Weight by id dictionary
+    prDic = {}
+    sum = 0
+
+    # In positive list
+    for i in range(0, len(indivA)):
+        tmp = (list)(indivA.values())[i]
+
+        weight = 0
+        for j in range(0, len(tmp)):
+            if tmp[j] in weightA:
+                weight += weightA[tmp[j]]
+        prDic[(list)(indivA.keys())[i]] = weight
+        if weight > 0:
+            sum+=1
+
+    printList = sorted(prDic.items(), key=lambda x: x[1], reverse=True)
+    print(str(sum / len(indivA) * 100) + "% 정확도")
+
     # Make Histogram positive prediction(weight)
     if hst:
-        # Weight by id dictionary
-        print={}
-        # In positive list
-        for i in range(0, len(indivA)):
-            tmp = np.array((list)(indivA.values())[i])
-            intsec = np.intersect1d(tmp, np.array((list)(weightA.keys())))
-            weight = 0
-            for j in range(0, intsec.size):
-                weight += weightA[intsec[j]]
-            print[(list)(indivA.keys())[i]]=weight
-        printList = sorted(print.items(), key=lambda x: x[1], reverse=True)
         makeHistogram(np.array(printList))
 
     return 0
@@ -205,7 +242,7 @@ def learningModule(listA, listB, ignore, learnCnt=10, hst=False):
 # Make Individual data with txt
 # Return Dictionary
 def makeIndiv(path):
-
+    """path:input path"""
     # Open file
     try:
         file = open(path, 'r', encoding='utf8')
@@ -217,7 +254,7 @@ def makeIndiv(path):
     line = file.readline()
 
     # Dictionary
-    indiv={}
+    indiv = {}
 
     while line:
         # Jump name
@@ -245,7 +282,7 @@ def makeIndiv(path):
 
             # Not insert Empty element
             if len(data) != 0:
-                indiv[id]=np.array(data)
+                indiv[id] = np.array(data)
         # End of if
 
     # End of while
@@ -271,7 +308,7 @@ def dtrHuman(hList, wDiction):
 # Make Module with txt
 # Return Dictionary
 def makeModule(path):
-        # Dictionary
+    # Dictionary
     weight = {}
 
     # Open file
@@ -291,10 +328,10 @@ def makeModule(path):
         line = line.replace(" \n", "")
 
         # Parsing
-        ptr=line.rfind(' ')
+        ptr = line.rfind(' ')
 
         # Add dictionary
-        weight[line[:ptr]] = (float)(line[ptr+1:])
+        weight[line[:ptr]] = (float)(line[ptr + 1:])
     # End of while
 
     # Close file
@@ -309,7 +346,7 @@ def makeModule(path):
 # Lagacy codes in old version   #
 #                               #
 
-# !! Legacy code !!
+# !!  Legacy code !!
 # Read txt in path and sort intersection in descending order
 # Write txt
 # Return output path
@@ -346,14 +383,10 @@ def makeLabelWrite(path):
     # End of while
 
     # Make output path
-    name=path
-    while name.find('\\') != -1:
-        name = name[name.find('\\')+1:]
-    name=name[:name.find('.')]
-    outPath = path[:path.find(name)] + name + "output.txt"
+    outPath = path[:path.rfind('.')] + "output.txt"
 
     # Open output file
-    output = open( outPath, 'w', encoding='utf8')
+    output = open(outPath, 'w', encoding='utf8')
     if output is None:
         print("경로 생성 실패.")
         return None
@@ -370,7 +403,7 @@ def makeLabelWrite(path):
     return outPath
 # End of makeLabelByTxt
 
-# !! Legacy code !!
+# !!  Legacy code !!
 # Draw Histogram with sorted txt
 def makeHistogramByTxt(path, xLabel="items", yLabel="nums", ignore=10):
     # Histogram lib
@@ -396,30 +429,30 @@ def makeHistogramByTxt(path, xLabel="items", yLabel="nums", ignore=10):
         line = line.replace(" \n", "")
 
         # Parsing
-        ptr=line.rfind(' ')
+        ptr = line.rfind(' ')
 
         # Remove low values
-        if (int)(line[ptr+1:]) < ignore:
+        if (int)(line[ptr + 1:]) < ignore:
             break
 
         # Add dictionary
-        labels[line[:ptr]] = (int)(line[ptr+1:])
+        labels[line[:ptr]] = (int)(line[ptr + 1:])
     # End of while
 
     # Close file
     file.close
 
     # Make name of graph
-    title=path
+    title = path
     while title.find('\\') != -1:
-        title = title[title.find('\\')+1:]
-    title = title[:len(title)-10]
-
+        title = title[title.find('\\') + 1:]
+    title = title[:len(title) - 10]
+  
     #hst.fontSettings()
 
     # Making Histogram...
     # Font setting
-    plt.rc('font', family="Malgun Gothic");
+    plt.rc('font', family="Malgun Gothic")
     # Histogram tilte
     plt.title(title)
     # x, y label name
@@ -431,6 +464,6 @@ def makeHistogramByTxt(path, xLabel="items", yLabel="nums", ignore=10):
     # Insert data
     plt.bar(x, y)
     # Set range
-    plt.ylim(ignore-2, y[0]+2)
+    plt.ylim(ignore - 2, y[0] + 2)
     plt.show()
 # End of makeHistogramByTxt
