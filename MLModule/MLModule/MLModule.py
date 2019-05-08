@@ -3,7 +3,7 @@
 import numpy as np
 
 # Make Label by txt
-# Return List
+# Return np array
 def makeLabel(path, ignore=1):
     """path:input path  ignore:label will be ignored under integer"""
 
@@ -41,6 +41,9 @@ def makeLabel(path, ignore=1):
     # Close file
     file.close
 
+    if len(labels) == 0:
+        return None
+
     # Sort
     sortLabels = sorted(labels.items(), key=lambda x: x[1], reverse=True)
 
@@ -53,9 +56,35 @@ def makeLabel(path, ignore=1):
 # End of makeLabel
 
 
+# Make label by individual dictionary
+# Return np array
+def makeLabelByDic(dic, ignore=1):
+    dicVal = list(dic.values())
+
+    labels={}
+
+    for i in range(0, len(dicVal)):
+        for j in range(0, len(dicVal[i])):
+            if dicVal[i][j] in labels:
+                labels[dicVal[i][j]] +=1
+            else:
+                labels[dicVal[i][j]] = 1
+
+    # Sort
+    sortLabels = sorted(labels.items(), key=lambda x: x[1], reverse=True)
+
+    # Slice
+    for i in range(0, len(sortLabels)):
+        if((int)(sortLabels[i][1]) < ignore): break
+    sliced = np.array(sortLabels[:i])
+
+    return sliced
+# End of makeLabelByDIc
+
+
 # Draw Histogram with numpyArray
 def makeHistogram(listArray, args=None):
-    """listArray:nd array   args:["title", "xLabel", "yLabel", lowVal]"""
+    """listArray:np array   args:["title", "xLabel", "yLabel", lowVal]"""
 
     # Histogram lib
     import matplotlib.pyplot as plt
@@ -89,29 +118,33 @@ def makeHistogram(listArray, args=None):
 
 
 # Liner learning model
-def learningModule(listA, listB, ignore, learnCnt=10, hst=False):
+def learningModule(listO, listA, ignore, learnCnt=10, hst=False):
+    """listA:list to make module listB:list to compare ignore: learnCnt:learning count hst:draw histogram"""
+
+    # Make individual data(dictionary)
+    indivB = makeIndiv(listO)
+    if len(indivB) == 0:
+        return -1
+    indivA = makeIndiv(listA)
+    if len(indivA) == 0:
+        return -1
+
+    for i in range(0, len(indivA)):
+        if list(indivA.keys())[i] in indivB:
+            del indivB[list(indivA.keys())[i]]
+
+    aList = list(indivA.values())[i]
+    bList = list(indivB.values())[i]
 
     # Get labels
     originA = makeLabel(listA, ignore)
-    if originA.size == 0:
-        return 1
-    originB = makeLabel(listB, ignore)
-    if originB.size == 0:
-        return 1
+    originB = makeLabelByDic(indivB, ignore)
 
     # Make different set of labels and init weight
     weightA = {}
     labelA = np.array(np.setdiff1d(originA[:,0], originB[:,0]))
     for i in range(0,labelA.size):
         weightA[labelA[i]] = 1.0
-
-    # Make individual data(dictionary)
-    indivA = makeIndiv(listA)
-    if len(indivA) == 0:
-        return 1
-    indivB = makeIndiv(listB)
-    if len(indivB) == 0:
-        return 1
 
     # Learning
     for cnt in range(0,learnCnt):
@@ -127,8 +160,6 @@ def learningModule(listA, listB, ignore, learnCnt=10, hst=False):
 
         # In positive list
         for i in range(0, len(indivA)):
-            aList = list(indivA.values())[i]
-            
             # Calculate weight
             weight = 0
             for j in range(0, len(aList)):
@@ -148,8 +179,8 @@ def learningModule(listA, listB, ignore, learnCnt=10, hst=False):
                         pf[aList[j]] += 1
         # End of for
 
-        pfKeys=(list)(pf.keys())
-        pfVals=(list)(pf.values())
+        pfKeys=list(pf.keys())
+        pfVals=list(pf.values())
 
         # Weight adjustment
         for i in range(0, len(pf)):
@@ -163,8 +194,6 @@ def learningModule(listA, listB, ignore, learnCnt=10, hst=False):
 
         # In negative list
         for i in range(0, len(indivB)):
-            bList = list(indivB.values())[i]
-
             # Calculate weight
             weight = 0
             for j in range(0, len(bList)):
@@ -183,8 +212,8 @@ def learningModule(listA, listB, ignore, learnCnt=10, hst=False):
                         nt[bList[j]] += 1
         # End of for
 
-        ntKeys=(list)(nt.keys())
-        ntVals=(list)(nt.values())
+        ntKeys=list(nt.keys())
+        ntVals=list(nt.values())
 
         # Weight adjustment
         for i in range(0, len(nt)):
@@ -210,7 +239,6 @@ def learningModule(listA, listB, ignore, learnCnt=10, hst=False):
     import FileRW
     outPath = FileRW.makePathStr(listA, 'module.txt')
     FileRW.writeFileByList(outPath, np.array(weightAList))
-
     
     # Weight by id dictionary
     prDic = {}
@@ -218,13 +246,13 @@ def learningModule(listA, listB, ignore, learnCnt=10, hst=False):
 
     # In positive list
     for i in range(0, len(indivA)):
-        tmp = (list)(indivA.values())[i]
+        tmp = list(indivA.values())[i]
 
         weight = 0
         for j in range(0, len(tmp)):
             if tmp[j] in weightA:
                 weight += weightA[tmp[j]]
-        prDic[(list)(indivA.keys())[i]] = weight
+        prDic[list(indivA.keys())[i]] = weight
         if weight > 0:
             sum+=1
 
@@ -331,7 +359,10 @@ def makeModule(path):
         ptr = line.rfind(' ')
 
         # Add dictionary
-        weight[line[:ptr]] = (float)(line[ptr + 1:])
+        try:
+            weight[line[:ptr]] = (float)(line[ptr + 1:])
+        except:
+            return {}
     # End of while
 
     # Close file
@@ -339,6 +370,90 @@ def makeModule(path):
 
     return weight
 # End of makeModule
+
+
+# K-means with raw data txt
+# Return void
+def makeClust(path, ignore, clust, hst=False):
+    """path:data to analyze ignore:integer to ignore clust:num of clusts hst:make histogram(def:false)"""
+
+    # read raw
+    label = makeLabel(path, ignore)
+
+    # save
+    #FileRW.writeFileByList(FileRW.makePathStr(rawPath), label)
+
+    # take labels
+    labels = label[:,0]
+
+    indiv = makeIndiv(path)
+    
+    indivKey = list(indiv.keys())
+    indivVal = list(indiv.values())
+    indivVec = [[0] * labels.size for _ in range(len(indivVal))]
+
+    # make individual vector
+    print("making individual vector("+ str(len(indivVal)) + ")...")
+    for i in range(0, len(indivVal)):
+        if i%100 == 0:
+            print("in "+str(i)+"...")
+        for j in range(0, labels.size):
+            if labels[j] in indivVal[i]:
+                indivVec[i][j] = 1
+
+    from scipy.cluster.vq import whiten
+    whitened = whiten(indivVec)
+
+    import scipy.cluster.hierarchy as hac
+
+    a = np.array(whitened)
+
+    # make linkage
+    print("making linkage...")
+    z = hac.linkage(a, method='complete')
+
+    # take Inflection point
+    knee = np.diff(z[::-1, 2], 2)
+    knee[knee.argmax()]=0
+    #numClust = knee.argmax()
+
+    numClust = clust
+    if numClust < 2:
+        numClust = 2
+
+    if hst:
+        import matplotlib.pyplot as plt
+        fig, axes11=plt.subplots(1,1)
+        axes11.plot(range(1, len(z)+1), z[::-1, 2])
+        axes11.plot(range(2, len(z)), knee)
+
+        axes11.text(knee.argmax(), z[::-1, 2][knee.argmax()-1], 'possible\n<- knee point')
+        axes11.text(numClust, z[::-1, 2][numClust-1], 'selected\n<- knee point')
+        m = '\n(method: {})'.format('complete')
+        plt.setp(axes11, title='Screeplot{}'.format(m), xlabel='partition',
+                    ylabel='{}\ncluster distance'.format(m))
+        plt.show()
+
+    # make clust
+    part = hac.fcluster(z, numClust, 'maxclust')
+    
+    output={}
+    complement={}
+
+    import FileRW
+
+    print("making files...")
+    for i in range(1, numClust+1):
+        output[i]=open(FileRW.makePathStr(path, str(i)+".txt"), 'w', encoding='utf8')
+
+    for i in range(0, len(part)):
+        output[part[i]].write(indivKey[i]+" Likes\n")
+        for j in range(0, len(indivVal[i])):
+            output[part[i]].write(indivVal[i][j]+"\n")
+
+    for i in range(1, numClust+1):
+        output[i].close
+# End of makeClust
 
 
 

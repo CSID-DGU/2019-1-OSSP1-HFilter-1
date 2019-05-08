@@ -1,0 +1,13 @@
+C:\Users\hacel\source\repos\HFilter\HFilter\HFilter\bin\Debug\netstandard2.0\HFilter.deps.json
+C:\Users\hacel\source\repos\HFilter\HFilter\HFilter\bin\Debug\netstandard2.0\HFilter.dll
+C:\Users\hacel\source\repos\HFilter\HFilter\HFilter\bin\Debug\netstandard2.0\HFilter.pdb
+C:\Users\hacel\source\repos\HFilter\HFilter\HFilter\obj\Debug\netstandard2.0\HFilter.csprojAssemblyReference.cache
+C:\Users\hacel\source\repos\HFilter\HFilter\HFilter\obj\Debug\netstandard2.0\App.xaml.g.cs
+C:\Users\hacel\source\repos\HFilter\HFilter\HFilter\obj\Debug\netstandard2.0\MainPage.xaml.g.cs
+C:\Users\hacel\source\repos\HFilter\HFilter\HFilter\obj\Debug\netstandard2.0\HFilter.csproj.CoreCompileInputs.cache
+C:\Users\hacel\source\repos\HFilter\HFilter\HFilter\obj\Debug\netstandard2.0\HFilter.AssemblyInfoInputs.cache
+C:\Users\hacel\source\repos\HFilter\HFilter\HFilter\obj\Debug\netstandard2.0\HFilter.AssemblyInfo.cs
+C:\Users\hacel\source\repos\HFilter\HFilter\HFilter\obj\Debug\netstandard2.0\XamlC.stamp
+C:\Users\hacel\source\repos\HFilter\HFilter\HFilter\obj\Debug\netstandard2.0\HFilter.dll
+C:\Users\hacel\source\repos\HFilter\HFilter\HFilter\obj\Debug\netstandard2.0\HFilter.pdb
+C:\Users\hacel\source\repos\HFilter\HFilter\HFilter\obj\Debug\netstandard2.0\MainPage_Desktop.xaml.g.cs
