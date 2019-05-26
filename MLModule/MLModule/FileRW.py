@@ -3,6 +3,9 @@
 # Write output file
 def writeFileByList(path, listArray):
     """path:save path   listArray:nd array"""
+    if listArray is None:
+        return
+
     # Open output file
     output = open(path, 'w', encoding='utf8')
     # Error
