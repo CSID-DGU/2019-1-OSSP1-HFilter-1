@@ -10,6 +10,8 @@ ignore = 10
 MLHst = False
 # Machine Learning Count
 MLCnt = 50
+# Compression rate
+Cmp = 0
 
 def sltUtil():
     print(">Util")
@@ -45,7 +47,7 @@ def sltUtil():
             print("Wrong Input")
             return
         elif rng==0:
-            label = MLModule.makeLabel(path)
+            label = MLModule.makeLabel(path, ignore)
             file.writeFileByList(file.makePathStr(path), label)
         else:
             for i in range(1,rng+1):
@@ -73,7 +75,7 @@ def sltMLLearning():
         path.append(input("Insert Compare Path : "))
 
         # Learning
-        err = MLModule.learningModule(path[0], path[1], ignore, MLCnt, MLHst)
+        err = MLModule.learningModule(path[0], path[1], ignore, MLCnt, Cmp, MLHst)
 
         if err==-1:
             print("Path Error")
@@ -112,22 +114,22 @@ def sltMLLearning():
 
 def sltSetting():
     print(">Settings")
-    select = input("Threshold[1] MLHistogram[2] MLCount[3] Return[0] :")
+    select = input("Threshold[1] MLHistogram[2] MLCount[3] Compression[4] Return[0] :")
         
     if select == "0":
         return
 
     elif select == "1":
-        newinput = (int)(input("Insert Threshold : "))
+        global ignore
+        newinput = (int)(input("Insert Threshold(" + str(ignore) + ") : "))
         if newinput < 1:
             print("Threashold must bigger than 1")
             return
-        global ignore
         ignore = newinput
 
     elif select == "2":
-        MLHstStr = input("Make ML Hisogram? [T/F] :")
         global MLHst
+        MLHstStr = input("Make ML Hisogram?(" + str(MLHst) + ") [T/F] :")
         if MLHstStr == "T":
             MLHst = True
         elif MLHstStr == "F":
@@ -137,12 +139,17 @@ def sltSetting():
             return
 
     elif select == "3":
-        newinput = (int)(input("Insert Machine Learning Frequency : "))
+        global MLCnt
+        newinput = (int)(input("Insert Machine Learning Frequency(" + str(MLCnt) + ") : "))
         if newinput < 1:
             print("Wrong Input")
             return
-        global MLCnt
         MLCnt = newinput
+
+    elif select == "4":
+        global Cmp
+        newinput = (float)(input("Insert Compression rate(" + str(Cmp) +") : "))
+        Cmp = newinput
 
     else:
         print("Wrong Input")

@@ -1,1 +1,0 @@
-C:\Users\hacel\source\repos\HFilter\HFilter\HFilter.UWP\HFilter.UWP.csproj;x86

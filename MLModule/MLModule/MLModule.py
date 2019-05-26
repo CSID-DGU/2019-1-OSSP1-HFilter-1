@@ -118,23 +118,25 @@ def makeHistogram(listArray, args=None):
 
 
 # Liner learning model
-def learningModule(listO, listA, ignore, learnCnt=10, hst=False):
-    """listA:list to make module listB:list to compare ignore: learnCnt:learning count hst:draw histogram"""
+def learningModule(listO, listA, ignore, learnCnt=10, compression=0.0, hst=False):
+    """listA:list to make module
+    listB:list to compare
+    ignore:
+    learnCnt:learning count 
+    compression:compression rate(float)
+    hst:draw histogram"""
 
     # Make individual data(dictionary)
-    indivB = makeIndiv(listO)
+    indivB = makeIndiv(listO, ignore)
     if len(indivB) == 0:
         return -1
-    indivA = makeIndiv(listA)
+    indivA = makeIndiv(listA, ignore)
     if len(indivA) == 0:
         return -1
 
     for i in range(0, len(indivA)):
         if list(indivA.keys())[i] in indivB:
             del indivB[list(indivA.keys())[i]]
-
-    aList = list(indivA.values())[i]
-    bList = list(indivB.values())[i]
 
     # Get labels
     originA = makeLabel(listA, ignore)
@@ -160,6 +162,8 @@ def learningModule(listO, listA, ignore, learnCnt=10, hst=False):
 
         # In positive list
         for i in range(0, len(indivA)):
+            aList = list(indivA.values())[i]
+
             # Calculate weight
             weight = 0
             for j in range(0, len(aList)):
@@ -185,15 +189,16 @@ def learningModule(listO, listA, ignore, learnCnt=10, hst=False):
         # Weight adjustment
         for i in range(0, len(pf)):
             if pfKeys[i] in weightA:
-                weightA[pfKeys[i]] = (float)(pfVals[i]) / gap + (float)(weightA[pfKeys[i]])
+                weightA[pfKeys[i]] = (float)(pfVals[i])/gap + (float)(weightA[pfKeys[i]])
             else:
-                weightA[pfKeys[i]] = (float)(pfVals[i]) / gap
+                weightA[pfKeys[i]] = (float)(pfVals[i])/gap
 
             if weightA[pfKeys[i]]==0:
                 del weightA[pfKeys[i]]
 
         # In negative list
         for i in range(0, len(indivB)):
+            bList = list(indivB.values())[i]
             # Calculate weight
             weight = 0
             for j in range(0, len(bList)):
@@ -218,9 +223,9 @@ def learningModule(listO, listA, ignore, learnCnt=10, hst=False):
         # Weight adjustment
         for i in range(0, len(nt)):
             if ntKeys[i] in weightA:
-                weightA[ntKeys[i]] = -(float)(ntVals[i]) / gap + (float)(weightA[ntKeys[i]])
+                weightA[ntKeys[i]] = -(float)(ntVals[i])/gap + (float)(weightA[ntKeys[i]])
             else:
-                weightA[ntKeys[i]] = -(float)(ntVals[i]) / gap
+                weightA[ntKeys[i]] = -(float)(ntVals[i])/gap
 
             if weightA[ntKeys[i]]==0:
                 del weightA[ntKeys[i]]
@@ -231,6 +236,18 @@ def learningModule(listO, listA, ignore, learnCnt=10, hst=False):
         if pfSum == 0 and ntSum==0:
             break
     # End of learning
+
+    orgLen=len(weightA)
+    cmprate=0;
+    # Compression
+    if compression!=0.0 :
+        weightAKey = list(weightA.keys())
+        weightAVal=list(weightA.values())
+
+        for i in range(0, len(weightAVal)):
+            if weightAVal[i] <compression and weightAVal[i] > -compression:
+                cmprate+=1
+                del weightA[weightAKey[i]]
 
     # Sort
     weightAList = sorted(weightA.items(), key=lambda x: x[1], reverse=True)
@@ -257,7 +274,7 @@ def learningModule(listO, listA, ignore, learnCnt=10, hst=False):
             sum+=1
 
     printList = sorted(prDic.items(), key=lambda x: x[1], reverse=True)
-    print(str(sum / len(indivA) * 100) + "% 정확도")
+    print(str(sum / len(indivA) * 100) + "% 정확도 " + str(cmprate/orgLen*100)+ "% 압축")
 
     # Make Histogram positive prediction(weight)
     if hst:
@@ -269,7 +286,7 @@ def learningModule(listO, listA, ignore, learnCnt=10, hst=False):
 
 # Make Individual data with txt
 # Return Dictionary
-def makeIndiv(path):
+def makeIndiv(path, ignore=0):
     """path:input path"""
     # Open file
     try:
@@ -305,11 +322,13 @@ def makeIndiv(path):
                 # Jump if not data
                 if not line or "검색 결과" in line or "Likes" in line:
                     break
+                #if "오늘 뭐 먹지?"in line or "인사이트"in line or "일반인들의 소름돋는 라이브"in line or "CGV"in line or "하이마트(Hi-mart)"in line:
+                #    continue
                 data.append(line.replace("\n", ""))
             # End of while
 
             # Not insert Empty element
-            if len(data) != 0:
+            if len(data) > ignore:
                 indiv[id] = np.array(data)
         # End of if
 
@@ -379,6 +398,8 @@ def makeClust(path, ignore, clust, hst=False):
 
     # read raw
     label = makeLabel(path, ignore)
+    if label is None:
+        return None
 
     # save
     #FileRW.writeFileByList(FileRW.makePathStr(rawPath), label)
@@ -397,16 +418,22 @@ def makeClust(path, ignore, clust, hst=False):
     for i in range(0, len(indivVal)):
         if i%100 == 0:
             print("in "+str(i)+"...")
-        for j in range(0, labels.size):
-            if labels[j] in indivVal[i]:
-                indivVec[i][j] = 1
 
-    from scipy.cluster.vq import whiten
-    whitened = whiten(indivVec)
+        tmp=indivVal[i].tolist()
+
+        for j in range(0, labels.size):
+            if labels[j] in tmp:
+                indivVec[i][j] = 1
+                tmp.remove(labels[j])
+            if len(tmp)==0:
+                break
+
+    #from scipy.cluster.vq import whiten
+    #whitened = whiten(indivVec)
+    #a = np.array(whitened)
+    a = np.array(indivVec)
 
     import scipy.cluster.hierarchy as hac
-
-    a = np.array(whitened)
 
     # make linkage
     print("making linkage...")
