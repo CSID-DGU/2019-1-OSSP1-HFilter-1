@@ -1,6 +1,7 @@
 ﻿using Android.Content;
 using Android.Views;
 using Android.Widget;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,8 +15,20 @@ namespace HFilter
         public SelectListView(Context context)
         {
             inflater = (LayoutInflater)context.GetSystemService(Context.LayoutInflaterService);
-            total = new List<string>();
-            total=Module.total.ToList();
+
+            Random random = new Random((int)DateTime.Now.Ticks);
+            total = Module.total.ToList();
+            int n = total.Count;
+
+            // shuffle
+            while (--n >= 1)
+            {
+                int k = random.Next(n + 1);
+                string tmp = total[k];
+                total[k] = total[n];
+                total[n] = tmp;
+            }
+
         }
 
         public override int Count {

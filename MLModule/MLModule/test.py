@@ -334,22 +334,306 @@ def testcode6(rawPath, ignore, clust):
     #plt.scatter(codebook[:, 0], codebook[:, 1], c='r')
     #plt.show()
 
+def hash(text):
+    import hashlib
+    sha512=hashlib.sha512()
+    sha512.update(text.encode('utf-8'))
+    out=sha512.hexdigest()
+    print(out)
+
+def testcode7():
+    path = input("Enter the file name or path : ")
+
+    # Open file
+    file = open(path, 'r', encoding='utf8')
+    if file is None:
+        print("잘못된 경로입니다.")
+        return None
+    
+    # Dictionary
+    labels = {}
+
+    # Near List
+    NList = []
+
+    # Read file
+    while True:
+        line = file.readline()
+        if not line:
+            break
+
+        # Remove Newline character
+        line = line.replace(" \n", "")
+
+        # Parsing
+        ptr = line.rfind(' ')
+
+        ## Remove low values
+        #if (int)(line[ptr + 1:]) < ignore:
+        #    break
+
+        # Add dictionary
+        labels[line[:ptr]] = []
+    # End of while
+
+    # Close file
+    file.close
+
+
+    cnt=0
+    #compare0
+    for i in range(0,2):
+        path = input("Enter male/female path : ")
+        # Open file
+        try:
+            file = open(path, 'r', encoding='utf8')
+        except:
+            continue
+        if file is None:
+            file.close
+            continue
+
+        cnt+=1
+        Ncnt=0
+        NSList=[]
+        # Read file
+        while True:
+            line = file.readline()
+            if not line:
+                break
+
+            # Remove Newline character
+            line = line.replace(" \n", "")
+
+            # Parsing
+            ptr = line.rfind(' ')
+
+            ## Remove low values
+            #if (int)(line[ptr + 1:]) < ignore:
+            #    break
+
+            # Add dictionary
+            if line[:ptr] not in labels:
+                labels[line[:ptr]]=[]
+                for j in range(0,cnt):
+                    labels[line[:ptr]].append(0)
+            labels[line[:ptr]].append(float(line[ptr + 1:]))
+
+            if float(line[ptr + 1:])>0 and Ncnt<11:
+                Ncnt+=1
+                NSList.append(line[:ptr])
+        # End of while
+
+        NList.append(NSList)
+        keys=list(labels.keys())
+        for i in range(0, len(keys)):
+            if len(labels[keys[i]])!=cnt+1:
+                labels[keys[i]].append(0)
+
+        # Close file
+        file.close
+    # End of for
+    
+    # compare 1
+    path = input("Enter the file path : ")
+    for i in range(1, 27):
+        # Open file
+        try:
+            file = open(path+str(i)+"module.txt", 'r', encoding='utf8')
+        except:
+            continue
+        if file is None:
+            file.close
+            continue
+
+        cnt+=1
+        Ncnt=0
+        NSList=[]
+        # Read file
+        while True:
+            line = file.readline()
+            if not line:
+                break
+
+            # Remove Newline character
+            line = line.replace(" \n", "")
+
+            # Parsing
+            ptr = line.rfind(' ')
+
+            ## Remove low values
+            #if (int)(line[ptr + 1:]) < ignore:
+            #    break
+
+            # Add dictionary
+            if line[:ptr] not in labels:
+                labels[line[:ptr]]=[]
+                for j in range(0,cnt):
+                    labels[line[:ptr]].append(0)
+            labels[line[:ptr]].append(float(line[ptr + 1:]))
+
+            if float(line[ptr + 1:])>0 and Ncnt<11:
+                Ncnt+=1
+                NSList.append(line[:ptr])
+        # End of while
+
+        NList.append(NSList)
+        keys=list(labels.keys())
+        for i in range(0, len(keys)):
+            if len(labels[keys[i]])!=cnt+1:
+                labels[keys[i]].append(0)
+
+        # Close file
+        file.close
+    # End of for
+
+    # compare2
+    path = input("Enter the file path : ")
+    for i in range(0, 22):
+        # Open file
+        try:
+            file = open(path+str(i)+"module.txt", 'r', encoding='utf8')
+        except:
+            continue
+        if file is None:
+            file.close
+            continue
+
+        cnt+=1
+        Ncnt=0
+        NSList=[]
+        # Read file
+        while True:
+            line = file.readline()
+            if not line:
+                break
+
+            # Remove Newline character
+            line = line.replace(" \n", "")
+
+            # Parsing
+            ptr = line.rfind(' ')
+
+            ## Remove low values
+            #if (int)(line[ptr + 1:]) < ignore:
+            #    break
+
+            # Add dictionary
+            if line[:ptr] not in labels:
+                labels[line[:ptr]]=[]
+                for j in range(0,cnt):
+                    labels[line[:ptr]].append(0)
+
+            labels[line[:ptr]].append(float(line[ptr + 1:]))
+
+            if float(line[ptr + 1:])>0 and Ncnt<11:
+                Ncnt+=1
+                NSList.append(line[:ptr])
+        # End of while
+
+        NList.append(NSList)
+        keys=list(labels.keys())
+        for i in range(0, len(keys)):
+            if len(labels[keys[i]])!=cnt+1:
+                labels[keys[i]].append(0)
+
+        # Close file
+        file.close
+    # End of for
+
+    # save
+    path = input("Enter the out path : ")
+    # Open output file
+    output = open(path, 'w', encoding='utf8')
+    # Error
+    if output is None:
+        print("Invalid path")
+        return 1
+
+    import hashlib
+    sha256=hashlib.sha256()
+    keys=list(labels.keys())
+    # Write
+    for i in range(0, len(keys)):
+        key=keys[i]
+        sha256.update(key.encode('utf-8'))
+        output.write(key+":")
+        for j in range(0, len(labels[keys[i]])):
+            tmp=f"{labels[keys[i]][j]:3.1f}"
+            output.write(tmp + " ")
+        output.write("\n")
+
+    output.close
+
+    # save 2
+    path = input("Enter the out path")
+    # Open output file
+    output = open(path, 'w', encoding='utf8')
+    # Error
+    if output is None:
+        print("Invalid path")
+        return 1
+
+    for i in range(0, len(NList)):
+        for j in range(0, len(NList[i])):
+            output.write(NList[i][j]+">")
+        output.write("\n")
+    output.close
+
+def testcode8():
+    path = input("Enter the file path : ")
+    file = open(path, 'r', encoding='utf8')
+    out = open(FileRW.makePathStr(path), 'w', encoding='utf8')
+
+    while True:
+        line = file.readline()
+        if not line:
+            break
+
+        # Parsing
+        ptr = line.rfind(":")
+
+        ## Remove low values
+        #if (int)(line[ptr + 1:]) < ignore:
+        #    break
+
+        out.write(line[:ptr]+"\n")
+    # End of while
+
+    file.close()
+    out.close()
 
 if __name__ == '__main__':
+    #testcode8()
+    testcode7()
 
     #import numpy as np
     #from scipy.cluster.vq import vq, kmeans, whiten
     #import matplotlib.pyplot as plt
-    path="C:\\Users\\hacel\\source\\repos\\HFilter\\Data\\test\\k26\\data"
+    #path="C:\\Users\\hacel\\source\\repos\\HFilter\\Data\\test\\k26\\data"
 
     #num=testcode6(path+".txt", 6)
 
-    for i in range(1,26+1):
-        label = MLModule.makeLabel(path+str(i)+".txt")
-        FileRW.writeFileByList(path+str(i)+"output.txt", label)
+    #for i in range(1,26+1):
+    #    label = MLModule.makeLabel(path+str(i)+".txt")
+    #    FileRW.writeFileByList(path+str(i)+"output.txt", label)
 
+    #path = []
+    #path.append(input("Insert Base Path : "))
+    #path.append(input("Insert Compare Path : "))
 
+    ## Learning
+    #for i in range(1,25):
+    #    err=MLModule.learningModule(path[0], path[1]+str(i)+".txt", 10, 100, 0, False)
+    #    if err==-1:
+    #        print(path[1]+str(i)+".txt Error")
 
+    #path = input("Enter the file name or path : ")
+    #label = MLModule.makeLabel(path, 0)
+    #import FileRW as file
+    #file.writeFileByList(file.makePathStr(path), label)
+
+    #hash("test string")
 
 #!!! test codes !!!#
 #for i in range(0, 100):

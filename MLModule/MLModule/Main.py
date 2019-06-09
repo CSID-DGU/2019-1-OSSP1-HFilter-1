@@ -3,13 +3,13 @@ import MLModule
 import FileRW as file
 
 # ReleaseState .  Week Month Date
-VERSION = 0.050506
+VERSION = 0.090606
 # Threshold
 ignore = 10
 # Machine Learning Histogram
 MLHst = False
 # Machine Learning Count
-MLCnt = 50
+MLCnt = 100
 # Compression rate
 Cmp = 0
 

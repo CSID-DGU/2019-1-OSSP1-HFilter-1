@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HFilter
 {
-    [Activity(Label = "@string/app_name", Theme = "@style/MyTheme.NoTitle", MainLauncher = true)]
+    [Activity(Label = "@string/app_name", Theme = "@style/MyTheme.NoTitle")]
     public class MainActivity : AppCompatActivity
     {
         Button button1;
@@ -47,9 +47,7 @@ namespace HFilter
         private int Init()
         {
             alert = new Alert(this);
-            Module.modules = new Dictionary<string, float>[26];
-            Module.total = new List<string>();
-            Module.assets = this.Assets;
+            Module.Init(Assets);
 
             button1 = FindViewById<Button>(Resource.Id.button1);
             button1.Click += Button1_Click;
@@ -67,20 +65,20 @@ namespace HFilter
             return 0;
         }
 
-        private async void Button3_Click(object sender, EventArgs e)
+        private void Button3_Click(object sender, EventArgs e)
         {
             button3.Enabled = false;
 
             // read text
-            Toast loading = Toast.MakeText(this, "reading...", ToastLength.Long);
+            Toast loading = Toast.MakeText(this, "this button is not used", ToastLength.Long);
             loading.Show();
 
-            Task<int> read = Module.ReadTotal();
-            int result = await read;
-            if(result==0)
-                state.Text += "total read success\n";
+            //Task<int> read = Module.ReadTotal();
+            //int result = await read;
+            //if(result==0)
+            //    state.Text += "total read success\n";
 
-            button3.Enabled = true;
+            //button3.Enabled = true;
         }
 
         private async void Button2_Click(object sender, EventArgs e)
@@ -91,13 +89,22 @@ namespace HFilter
             // read text
             Toast loading = Toast.MakeText(this, "loading...", ToastLength.Long);
             loading.Show();
-
-            Module.modules[0] = new Dictionary<string, float>();
-            Task<int> read = Module.ReadModule("malemodule.txt", 0);
-            int result = await read;
             
-            if(result==0)
+            Task<int> read = Module.ReadModule("TotalHS.txt", 0);
+            int result = await read;
+
+            if (result == 0)
+            {
                 state.Text += "modul read success\n";
+                for(int i=0; i<3; i++)
+                    state.Text += Module.module.Keys.ToArray()[i]+"\n";
+                state.Text += "...\n";
+            }
+
+            Task<int> list = Module.ReadTotal();
+            result = await read;
+            if(result==0)
+                state.Text += "list read success\n";
 
             button2.Enabled = true;
         }
@@ -105,12 +112,7 @@ namespace HFilter
         private void Button1_Click(object sender, EventArgs e)
         {
             state.Text += "select clicked\n";
-            if(Module.total.Count==0)
-            {
-                alert.show("Alert", "please make total first");
-                return;
-            }
-            if (Module.modules[0] == null)
+            if (Module.module == null)
             {
                 alert.show("Alert", "please make module first");
                 return;
