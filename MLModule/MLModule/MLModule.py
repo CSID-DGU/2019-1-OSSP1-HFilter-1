@@ -142,6 +142,9 @@ def learningModule(listO, listA, ignore, learnCnt=10, compression=0.0, hst=False
     originA = makeLabel(listA, ignore)
     originB = makeLabelByDic(indivB, ignore)
 
+    if len(originA)==0:
+        return -1
+
     # Make different set of labels and init weight
     weightA = {}
     labelA = np.array(np.setdiff1d(originA[:,0], originB[:,0]))

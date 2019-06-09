@@ -8,23 +8,26 @@ using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
+using Android.Views.Animations;
 using Android.Widget;
 
 namespace HFilter
 {
 
-    [Activity(Label = "@string/app_name", Theme = "@style/MyTheme.NoTitle")]
+    [Activity(Label = "@string/app_name", Theme = "@style/MyTheme.NoTitle", NoHistory =true)]
     class SelectActivity:Activity
     {
         Button endBtn;
         ListView selectLV;
         Alert alert;
         SelectListView selectListView;
+        System.Security.Cryptography.SHA256 sHA256;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
+            // select layout
             SetContentView(Resource.Layout.activity_select);
         
             alert = new Alert(this);
@@ -36,7 +39,7 @@ namespace HFilter
 
         private int init()
         {
-            Module.weight = 0;
+            Module.weights = new float[Module.weightLen];
 
             //View view = LayoutInflater.Inflate(Resource.Layout.activity_select, null);
             endBtn = FindViewById<Button>(Resource.Id.endBtn);
@@ -49,6 +52,8 @@ namespace HFilter
             selectLV.Adapter = selectListView;
             selectLV.ItemClick += SelectLV_ItemClick;
 
+            sHA256 = System.Security.Cryptography.SHA256.Create();
+            
             return 0;
         }
 
@@ -56,12 +61,25 @@ namespace HFilter
         {
             var item = (Java.Util.ArrayList)selectLV.Adapter.GetItem(e.Position);
 
-            float tmp= 0;
+            // get item name
             string key = item.ToString();
+            // return [text]
             key = key.Substring(1, key.Length - 2);
-            Module.modules[0].TryGetValue(key, out tmp);
-            Module.weight += tmp;
 
+            // hash
+            byte[] keyB = Encoding.UTF8.GetBytes(key);
+            string keyH = BitConverter.ToString(sHA256.ComputeHash(keyB)).Replace("-", string.Empty);
+            float[] tmp;
+            bool err = Module.module.TryGetValue(keyH, out tmp);
+            if (!err) return;
+            for (int i= 0; i<tmp.Length; i++)
+            {
+                Module.weights[i] += tmp[i];
+            }
+
+            //Animation anim = AnimationUtils.LoadAnimation(ApplicationContext, Resource.Animation.abc_fade_in);
+            //e.View.Animation = anim;
+            //selectLV.StartAnimation(anim);
             selectListView.Remove(e.Position);
 
             endBtn.Enabled = true;
@@ -71,11 +89,11 @@ namespace HFilter
 
         private void endBtn_Click(object sender, EventArgs e)
         {
-            string result;
-            if (Module.weight > 0)
-                result = "male!";
-            else
-                result = "not male!";
+            string result = string.Empty;
+            for(int i=0; i<Module.weightLen; i++)
+            {
+                result += Module.weights[i].ToString() + "\n";
+            }
 
             string[] okButton = new string[1];
             okButton[0] = "ok";
