@@ -1,10 +1,19 @@
 # 동국대학교 OSSP 2019-1학기 1조 HFilter
 
-# 1부터 26 (27은 포함 X)
+# 1부터 26은 data1~data26
+# data14는 data141~data1424 세부사항 별개로 존재
+# 27부터 50은 data141부터 data1424를 위한 것
 # 각 문자열 개수만큼 문자열 중복 생성
-for i in range (1, 27):
+for i in range (1, 51):
     readPath = "./datalist/data" + str(i) + "output.txt"
     modifyPath = "./datalist/modify/data" + str(i) + "modify.txt"
+
+    # 27~50은 data141~data1424
+    if i >= 27:
+        ii = i - 26
+        readPath = "./datalist/data14output/data14" + str(ii) + "output.txt"
+        modifyPath = "./datalist/modify/data14/data14" + str(ii) + "modify.txt"
+
     f = open(readPath, "r", encoding='UTF-8')
     f2 = open(modifyPath, "w", encoding='UTF-8')
     while True:
