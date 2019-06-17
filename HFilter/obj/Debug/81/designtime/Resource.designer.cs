@@ -2227,11 +2227,26 @@ namespace HFilter
 			// aapt resource value: 0x7F090053
 			public const int abc_vector_test = 2131296339;
 			
+			// aapt resource value: 0x7F010002
+			public const int appicon = 2130771970;
+			
+			// aapt resource value: 0x7F010003
+			public const int appicon_notext = 2130771971;
+			
+			// aapt resource value: 0x7F010004
+			public const int appicon_old0 = 2130771972;
+			
+			// aapt resource value: 0x7F010005
+			public const int appicon_old1 = 2130771973;
+			
 			// aapt resource value: 0x7F090054
 			public const int avd_hide_password = 2131296340;
 			
 			// aapt resource value: 0x7F090055
 			public const int avd_show_password = 2131296341;
+			
+			// aapt resource value: 0x7F010006
+			public const int background = 2130771974;
 			
 			// aapt resource value: 0x7F090056
 			public const int design_bottom_navigation_item_background = 2131296342;
@@ -2250,6 +2265,9 @@ namespace HFilter
 			
 			// aapt resource value: 0x7F09005B
 			public const int design_snackbar_background = 2131296347;
+			
+			// aapt resource value: 0x7F010007
+			public const int main = 2130771975;
 			
 			// aapt resource value: 0x7F09005C
 			public const int navigation_empty_icon = 2131296348;
@@ -2290,17 +2308,32 @@ namespace HFilter
 			// aapt resource value: 0x7F09000C
 			public const int notify_panel_notification_icon_bg = 2131296268;
 			
-			// aapt resource value: 0x7F010002
-			public const int sample = 2130771970;
+			// aapt resource value: 0x7F010008
+			public const int sample = 2130771976;
 			
-			// aapt resource value: 0x7F010003
-			public const int splash = 2130771971;
+			// aapt resource value: 0x7F010009
+			public const int splash = 2130771977;
 			
-			// aapt resource value: 0x7F010004
-			public const int splash_logo = 2130771972;
+			// aapt resource value: 0x7F010010
+			public const int splash_load = 2130771984;
 			
-			// aapt resource value: 0x7F010005
-			public const int splash_old = 2130771973;
+			// aapt resource value: 0x7F010011
+			public const int splash_logo = 2130771985;
+			
+			// aapt resource value: 0x7F010012
+			public const int splash_old = 2130771986;
+			
+			// aapt resource value: 0x7F010013
+			public const int symbol = 2130771987;
+			
+			// aapt resource value: 0x7F010014
+			public const int symbol_notext = 2130771988;
+			
+			// aapt resource value: 0x7F010015
+			public const int symbol_old = 2130771989;
+			
+			// aapt resource value: 0x7F010016
+			public const int test = 2130771990;
 			
 			// aapt resource value: 0x7F090069
 			public const int tooltip_frame_dark = 2131296361;
@@ -2399,14 +2432,8 @@ namespace HFilter
 			// aapt resource value: 0x7F0C001A
 			public const int bottom = 2131492890;
 			
-			// aapt resource value: 0x7F020002
-			public const int button1 = 2130837506;
-			
-			// aapt resource value: 0x7F020003
-			public const int button2 = 2130837507;
-			
 			// aapt resource value: 0x7F020004
-			public const int button3 = 2130837508;
+			public const int button1 = 2130837508;
 			
 			// aapt resource value: 0x7F0C001B
 			public const int buttonPanel = 2131492891;
@@ -2465,8 +2492,8 @@ namespace HFilter
 			// aapt resource value: 0x7F0C002D
 			public const int end = 2131492909;
 			
-			// aapt resource value: 0x7F020009
-			public const int endBtn = 2130837513;
+			// aapt resource value: 0x7F020007
+			public const int endBtn = 2130837511;
 			
 			// aapt resource value: 0x7F0C002E
 			public const int end_padder = 2131492910;
@@ -2489,8 +2516,8 @@ namespace HFilter
 			// aapt resource value: 0x7F0C0034
 			public const int ghost_view = 2131492916;
 			
-			// aapt resource value: 0x7F020010
-			public const int holdLayout = 2130837520;
+			// aapt resource value: 0x7F020009
+			public const int holdLayout = 2130837513;
 			
 			// aapt resource value: 0x7F0C0035
 			public const int home = 2131492917;
@@ -2516,8 +2543,8 @@ namespace HFilter
 			// aapt resource value: 0x7F0C003C
 			public const int largeLabel = 2131492924;
 			
-			// aapt resource value: 0x7F020012
-			public const int largeText = 2130837522;
+			// aapt resource value: 0x7F020011
+			public const int largeText = 2130837521;
 			
 			// aapt resource value: 0x7F0C003D
 			public const int left = 2131492925;
@@ -2531,8 +2558,8 @@ namespace HFilter
 			// aapt resource value: 0x7F0C0040
 			public const int listMode = 2131492928;
 			
-			// aapt resource value: 0x7F020011
-			public const int listObjectLayout = 2130837521;
+			// aapt resource value: 0x7F020010
+			public const int listObjectLayout = 2130837520;
 			
 			// aapt resource value: 0x7F0C0041
 			public const int list_item = 2131492929;
@@ -2543,8 +2570,8 @@ namespace HFilter
 			// aapt resource value: 0x7F0C0043
 			public const int media_actions = 2131492931;
 			
-			// aapt resource value: 0x7F020013
-			public const int mediumText = 2130837523;
+			// aapt resource value: 0x7F020012
+			public const int mediumText = 2130837522;
 			
 			// aapt resource value: 0x7F0C0044
 			public const int message = 2131492932;
@@ -2573,8 +2600,8 @@ namespace HFilter
 			// aapt resource value: 0x7F0C0013
 			public const int notification_main_column_container = 2131492883;
 			
-			// aapt resource value: 0x7F020006
-			public const int outputTV = 2130837510;
+			// aapt resource value: 0x7F020003
+			public const int outputTV = 2130837507;
 			
 			// aapt resource value: 0x7F0C004D
 			public const int parallax = 2131492941;
@@ -2729,8 +2756,11 @@ namespace HFilter
 			// aapt resource value: 0x7F0C007C
 			public const int textSpacerNoTitle = 2131492988;
 			
-			// aapt resource value: 0x7F020007
-			public const int textView1 = 2130837511;
+			// aapt resource value: 0x7F020005
+			public const int textView1 = 2130837509;
+			
+			// aapt resource value: 0x7F020006
+			public const int textView2 = 2130837510;
 			
 			// aapt resource value: 0x7F0C007D
 			public const int text_input_password_toggle = 2131492989;
@@ -2744,8 +2774,8 @@ namespace HFilter
 			// aapt resource value: 0x7F0C0082
 			public const int titleDividerNoCustom = 2131492994;
 			
-			// aapt resource value: 0x7F020005
-			public const int titleTV = 2130837509;
+			// aapt resource value: 0x7F020002
+			public const int titleTV = 2130837506;
 			
 			// aapt resource value: 0x7F0C0083
 			public const int title_template = 2131492995;
@@ -3715,14 +3745,20 @@ namespace HFilter
 			// aapt resource value: 0x7F1600A9
 			public const int Base_Widget_Design_TabLayout = 2132148393;
 			
+			// aapt resource value: 0x7F070004
+			public const int MyTheme_Main = 2131165188;
+			
 			// aapt resource value: 0x7F070003
 			public const int MyTheme_NoTitle = 2131165187;
 			
-			// aapt resource value: 0x7F070005
-			public const int MyTheme_Splash = 2131165189;
+			// aapt resource value: 0x7F070007
+			public const int MyTheme_SLoad = 2131165191;
 			
-			// aapt resource value: 0x7F070004
-			public const int MyTheme_Start = 2131165188;
+			// aapt resource value: 0x7F070006
+			public const int MyTheme_Splash = 2131165190;
+			
+			// aapt resource value: 0x7F070005
+			public const int MyTheme_Start = 2131165189;
 			
 			// aapt resource value: 0x7F1600AA
 			public const int Platform_AppCompat = 2132148394;

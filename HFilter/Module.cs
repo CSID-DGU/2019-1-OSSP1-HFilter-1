@@ -9,7 +9,9 @@ namespace HFilter
     static class Module
     {
         public static List<string> total;
+        public static List<List<string>> nears;
         public static Dictionary<string, float[]>module;
+        public static List<string> flavor;
         public static float[] weights;
         public static AssetManager assets;
         public static int weightLen;
@@ -18,13 +20,15 @@ namespace HFilter
         {
             module = new Dictionary<string, float[]>();
             total = new List<string>();
+            nears = new List<List<string>>();
+            flavor = new List<string>();
             assets = asset;
         }
 
         // Read module
-        public static async Task<int> ReadModule(string assetName, int moduleid)
+        public static async Task<int> ReadModule()
         {
-            using (StreamReader sr = new StreamReader(assets.Open(assetName)))
+            using (StreamReader sr = new StreamReader(assets.Open("TotalHS.dat")))
             {
                 string line = await sr.ReadLineAsync();
                 int ptr;
@@ -55,16 +59,59 @@ namespace HFilter
             return 0; // Task<TResult> returns an object of type TResult, in this case int
         }
 
-        // Read total
+        // Read Total
         public static async Task<int> ReadTotal()
         {
-            using (StreamReader sr = new StreamReader(assets.Open("Total.txt")))
+            using (StreamReader sr = new StreamReader(assets.Open("Total.dat")))
             {
                 string line = await sr.ReadLineAsync();
 
                 while (line != null)
                 {
                     total.Add(line);
+                    line = await sr.ReadLineAsync();
+                }
+            }
+
+            return 0;
+        }
+
+        //Read Near
+        public static async Task<int> ReadNear()
+        {
+            using (StreamReader sr = new StreamReader(assets.Open("Near.dat")))
+            {
+                string line = await sr.ReadLineAsync();
+
+                while (line != null)
+                {
+                    List<string> tmp = new List<string>();
+                    while (line != string.Empty)
+                    {
+                        int ptr = line.IndexOf('>');
+                        tmp.Add(line.Substring(0, ptr));
+                        line = line.Substring(ptr + 1);
+                    }
+                    nears.Add(tmp);
+
+                    line = await sr.ReadLineAsync();
+                }
+            }
+
+            return 0;
+        }
+
+        //Read flavor
+        public static async Task<int> ReadFlavor()
+        {
+            using (StreamReader sr = new StreamReader(assets.Open("Flavor.dat")))
+            {
+                string line = await sr.ReadLineAsync();
+
+                while (line != null)
+                {
+                    flavor.Add(line);
+
                     line = await sr.ReadLineAsync();
                 }
             }

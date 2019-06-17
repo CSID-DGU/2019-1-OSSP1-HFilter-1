@@ -10,23 +10,44 @@ namespace HFilter
     class SelectListView : BaseAdapter
     {
         List<string> total;
+        List<string> viewLS;
+        List<List<string>> nears;
         LayoutInflater inflater;
+        Random random;
 
         public SelectListView(Context context)
         {
             inflater = (LayoutInflater)context.GetSystemService(Context.LayoutInflaterService);
 
-            Random random = new Random((int)DateTime.Now.Ticks);
+            random = new Random((int)DateTime.Now.Ticks);
             total = Module.total.ToList();
-            int n = total.Count;
+            nears = Module.nears.ToList();
+            viewLS = new List<string>();
+            for(int i=0; i<nears.Count; i++)
+            {
+                //deep copy
+                nears[i] = Module.nears[i].ToList();
+            }
+            for(int i=0; i<nears.Count; i++)
+            {
+                int k = random.Next(nears[i].Count);
+                viewLS.Add(nears[i][k]);
+                total.Remove(nears[i][k]);
+                nears[i].RemoveAt(k);
+            }
 
             // shuffle
-            while (--n >= 1)
+            for(int n=0; n<viewLS.Count; n++)
             {
-                int k = random.Next(n + 1);
-                string tmp = total[k];
-                total[k] = total[n];
-                total[n] = tmp;
+                int k = random.Next(viewLS.Count - n) + n;
+
+                string tmp = viewLS[k];
+                viewLS[k] = viewLS[n];
+                viewLS[n] = tmp;
+
+                List<string> lTmp = nears[k];
+                nears[k] = nears[n];
+                nears[n] = lTmp;
             }
 
         }
@@ -34,10 +55,10 @@ namespace HFilter
         public override int Count {
             get
             {
-                if (total == null)
+                if (viewLS == null)
                     return 0;
 
-                return total.Count;
+                return viewLS.Count;
             }
         }
 
@@ -45,7 +66,7 @@ namespace HFilter
         {
             Java.Util.ArrayList totalJList = new Java.Util.ArrayList();
 
-            totalJList.Add(total[position]);
+            totalJList.Add(viewLS[position]);
 
             return totalJList;
         }
@@ -82,7 +103,7 @@ namespace HFilter
                 listObject = (ListObject)convertView.Tag;
             }
 
-            listObject.largeText.Text = total[position];
+            listObject.largeText.Text = viewLS[position];
 
             return convertView;
         }
@@ -90,15 +111,47 @@ namespace HFilter
         // add to list
         public void Add(string info)
         {
-            total.Add(info);
+            viewLS.Add(info);
             NotifyDataSetChanged();
+        }
+
+        // add specific point
+        public void Add(string info, int position)
+        {
+            viewLS.Insert(position, info);
+            NotifyDataSetChanged();
+        }
+
+        // add near
+        public void AddNear(int position)
+        {
+            int k = random.Next(nears[position].Count);
+            Add(nears[position][k], position);
+            total.Remove(nears[position][k]);
+
+            // if near is not total
+            if (nears[position].Count != total.Count)
+            {
+                nears[position].RemoveAt(k);
+            }
+
+            if (nears[position].Count == 0)
+            {
+                nears[position] = total;
+            }
         }
 
         // remove to list
         public void Remove(int position)
         {
-            total.RemoveAt(position);
+            viewLS.RemoveAt(position);
             NotifyDataSetChanged();
+        }
+
+        // change list
+        public void Change(int position)
+        {
+            nears[position] = total;
         }
     }
 }

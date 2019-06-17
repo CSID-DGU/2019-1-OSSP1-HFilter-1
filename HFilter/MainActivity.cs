@@ -12,12 +12,11 @@ using System.Threading.Tasks;
 
 namespace HFilter
 {
-    [Activity(Label = "@string/app_name", Theme = "@style/MyTheme.NoTitle")]
+    [Activity(Label = "@string/app_name", Theme = "@style/MyTheme.Main")]
     public class MainActivity : AppCompatActivity
     {
         Button button1;
-        Button button2;
-        Button button3;
+        TextView title;
         TextView state;
 
         Alert alert;
@@ -47,66 +46,19 @@ namespace HFilter
         private int Init()
         {
             alert = new Alert(this);
-            Module.Init(Assets);
 
             button1 = FindViewById<Button>(Resource.Id.button1);
             button1.Click += Button1_Click;
-            button1.Text = "select";
-            button2 = FindViewById<Button>(Resource.Id.button2);
-            button2.Click += Button2_Click;
-            button2.Text = "module";
-            button3 = FindViewById<Button>(Resource.Id.button3);
-            button3.Click += Button3_Click;
-            button3.Text = "list";
+            button1.Text = "Filter!";
+
+            title = FindViewById<TextView>(Resource.Id.titleTV);
+            title.Visibility = Android.Views.ViewStates.Invisible;
 
             state = FindViewById<TextView>(Resource.Id.outputTV);
+            state.Visibility = Android.Views.ViewStates.Invisible;
             state.Text = "init success\n";
 
             return 0;
-        }
-
-        private void Button3_Click(object sender, EventArgs e)
-        {
-            button3.Enabled = false;
-
-            // read text
-            Toast loading = Toast.MakeText(this, "this button is not used", ToastLength.Long);
-            loading.Show();
-
-            //Task<int> read = Module.ReadTotal();
-            //int result = await read;
-            //if(result==0)
-            //    state.Text += "total read success\n";
-
-            //button3.Enabled = true;
-        }
-
-        private async void Button2_Click(object sender, EventArgs e)
-        {
-            button2.Enabled = false;
-            alert.show("Alert", "you've clicked ");
-
-            // read text
-            Toast loading = Toast.MakeText(this, "loading...", ToastLength.Long);
-            loading.Show();
-            
-            Task<int> read = Module.ReadModule("TotalHS.txt", 0);
-            int result = await read;
-
-            if (result == 0)
-            {
-                state.Text += "modul read success\n";
-                for(int i=0; i<3; i++)
-                    state.Text += Module.module.Keys.ToArray()[i]+"\n";
-                state.Text += "...\n";
-            }
-
-            Task<int> list = Module.ReadTotal();
-            result = await read;
-            if(result==0)
-                state.Text += "list read success\n";
-
-            button2.Enabled = true;
         }
 
         private void Button1_Click(object sender, EventArgs e)
@@ -114,7 +66,8 @@ namespace HFilter
             state.Text += "select clicked\n";
             if (Module.module == null)
             {
-                alert.show("Alert", "please make module first");
+                alert.show("Error", "module unloaded");
+                FinishAffinity();
                 return;
             }
 
@@ -123,6 +76,7 @@ namespace HFilter
 
             // show
             StartActivity(intent);
+            FindViewById<TextView>(Resource.Id.textView1).Text = "당신을 맞춰볼께요;)";
         }
     }
 }
