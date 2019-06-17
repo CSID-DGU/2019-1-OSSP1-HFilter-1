@@ -603,9 +603,32 @@ def testcode8():
     file.close()
     out.close()
 
+def testcode9():
+    path = input("Enter the file path : ")
+    file = open(path, 'r', encoding='utf8')
+    out = open(FileRW.makePathStr(path), 'w', encoding='utf8')
+
+    while True:
+        line = file.readline()
+        if not line:
+            break
+
+        # Parsing
+        ptr = line.find(" ")
+
+        ## Remove low values
+        #if (int)(line[ptr + 1:]) < ignore:
+        #    break
+
+        out.write(line[:ptr]+line[ptr+4:])
+    # End of while
+
+    file.close()
+    out.close()
+
 if __name__ == '__main__':
     #testcode8()
-    testcode7()
+    testcode9()
 
     #import numpy as np
     #from scipy.cluster.vq import vq, kmeans, whiten

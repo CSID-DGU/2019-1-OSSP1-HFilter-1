@@ -394,7 +394,7 @@ def makeModule(path):
 # End of makeModule
 
 
-# K-means with raw data txt
+# Hierachical with raw data txt
 # Return void
 def makeClust(path, ignore, clust, hst=False):
     """path:data to analyze ignore:integer to ignore clust:num of clusts hst:make histogram(def:false)"""
@@ -444,7 +444,7 @@ def makeClust(path, ignore, clust, hst=False):
 
     # take Inflection point
     knee = np.diff(z[::-1, 2], 2)
-    knee[knee.argmax()]=0
+    #knee[knee.argmax()]=0
     #numClust = knee.argmax()
 
     numClust = clust
@@ -455,9 +455,9 @@ def makeClust(path, ignore, clust, hst=False):
         import matplotlib.pyplot as plt
         fig, axes11=plt.subplots(1,1)
         axes11.plot(range(1, len(z)+1), z[::-1, 2])
-        axes11.plot(range(2, len(z)), knee)
+        #axes11.plot(range(2, len(z)), knee)
 
-        axes11.text(knee.argmax(), z[::-1, 2][knee.argmax()-1], 'possible\n<- knee point')
+        #axes11.text(knee.argmax(), z[::-1, 2][knee.argmax()-1], 'possible\n<- knee point')
         axes11.text(numClust, z[::-1, 2][numClust-1], 'selected\n<- knee point')
         m = '\n(method: {})'.format('complete')
         plt.setp(axes11, title='Screeplot{}'.format(m), xlabel='partition',
@@ -482,7 +482,14 @@ def makeClust(path, ignore, clust, hst=False):
             output[part[i]].write(indivVal[i][j]+"\n")
 
     for i in range(1, numClust+1):
-        output[i].close
+        output[i].close()
+
+    output=open(FileRW.makePathStr(path, "point.txt"), 'w', encoding='utf8')
+    for i in range(0, len(z[:,2])):
+        output.write(str(z[i,2])+'\n')
+    for i in range(0, len(z[:,2])):
+        output.write(str(i+1)+'\n')
+    output.close()
 # End of makeClust
 
 

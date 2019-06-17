@@ -63,7 +63,7 @@ def sltUtil():
 
 def sltMLLearning():
     print(">Machine Learning")
-    select = input("Make Module[1] Filter[2] KMeans[3] Return[0] :")
+    select = input("Make Module[1] Filter[2] Hierarchy[3] Return[0] :")
 
     if select == "0":
         return

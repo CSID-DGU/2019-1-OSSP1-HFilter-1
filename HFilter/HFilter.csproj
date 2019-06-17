@@ -66,17 +66,29 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SelectActivity.cs" />
     <Compile Include="SelectListView.cs" />
+    <Compile Include="SLoadActivity.cs" />
     <Compile Include="SplashActivity.cs" />
     <Compile Include="WebRequest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidAsset Include="Assets\Flavor.dat" />
+    <AndroidAsset Include="Assets\Near.dat" />
+    <AndroidAsset Include="Assets\Total.dat" />
+    <AndroidAsset Include="Assets\TotalHS.dat" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Include="Resources\drawable\appicon.png" />
+    <AndroidResource Include="Resources\drawable\background.png" />
+    <AndroidResource Include="Resources\drawable\main.png" />
     <AndroidResource Include="Resources\drawable\splash.xml" />
-    <AndroidResource Include="Resources\drawable\splash_logo.png" />
+    <AndroidResource Include="Resources\drawable\splash_logo.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\symbol.png" />
     <AndroidResource Include="Resources\layout\activity_main.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -116,13 +128,16 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\TotalHS.txt" />
+    <AndroidResource Include="Resources\drawable\appicon_notext.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\Total.txt" />
+    <AndroidResource Include="Resources\drawable\splash_load.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\Near.txt" />
+    <AndroidResource Include="Resources\drawable\symbol_notext.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

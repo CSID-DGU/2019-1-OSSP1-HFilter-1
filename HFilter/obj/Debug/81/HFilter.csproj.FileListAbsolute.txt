@@ -39,7 +39,13 @@ C:\Users\hacel\source\repos\HFilter\HFilter\obj\Debug\81\res\layout\activity_sel
 C:\Users\hacel\source\repos\HFilter\HFilter\obj\Debug\81\res\layout\listlayout.xml
 C:\Users\hacel\source\repos\HFilter\HFilter\obj\Debug\81\res\drawable\splash.xml
 C:\Users\hacel\source\repos\HFilter\HFilter\obj\Debug\81\res\drawable\splash_logo.png
-C:\Users\hacel\source\repos\HFilter\HFilter\obj\Debug\81\HFilter.csprojAssemblyReference.cache
+C:\Users\hacel\source\repos\HFilter\HFilter\obj\Debug\81\res\drawable\appicon.png
+C:\Users\hacel\source\repos\HFilter\HFilter\obj\Debug\81\res\drawable\appicon_notext.png
+C:\Users\hacel\source\repos\HFilter\HFilter\obj\Debug\81\res\drawable\symbol.png
+C:\Users\hacel\source\repos\HFilter\HFilter\obj\Debug\81\res\drawable\splash_load.xml
+C:\Users\hacel\source\repos\HFilter\HFilter\obj\Debug\81\res\drawable\background.png
+C:\Users\hacel\source\repos\HFilter\HFilter\obj\Debug\81\res\drawable\symbol_notext.png
+C:\Users\hacel\source\repos\HFilter\HFilter\obj\Debug\81\res\drawable\main.png
 C:\Users\hacel\source\repos\HFilter\HFilter\bin\Debug\Mono.Android.pdb
 C:\Users\hacel\source\repos\HFilter\HFilter\bin\Debug\mscorlib.pdb
 C:\Users\hacel\source\repos\HFilter\HFilter\bin\Debug\System.Core.pdb
@@ -69,3 +75,4 @@ C:\Users\hacel\source\repos\HFilter\HFilter\obj\Debug\81\android\assets\System.p
 C:\Users\hacel\source\repos\HFilter\HFilter\obj\Debug\81\android\assets\System.Runtime.Serialization.pdb
 C:\Users\hacel\source\repos\HFilter\HFilter\obj\Debug\81\android\assets\System.ServiceModel.Internals.pdb
 C:\Users\hacel\source\repos\HFilter\HFilter\obj\Debug\81\android\assets\System.Xml.pdb
+C:\Users\hacel\source\repos\HFilter\HFilter\obj\Debug\81\HFilter.csprojAssemblyReference.cache

@@ -12,6 +12,11 @@
     <item name="android:windowNoTitle">true</item>
   </style>
 
+  <style name="MyTheme.Main" parent ="Theme.AppCompat.Light.NoActionBar">
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:windowBackground">@drawable/main</item>
+  </style>
+
   <style name="MyTheme.Start" parent ="Theme.AppCompat.Light.NoActionBar">
     <item name="android:windowBackground">@color/colorPrimary</item>
     <item name="android:windowNoTitle">true</item>
@@ -20,6 +25,12 @@
 
   <style name="MyTheme.Splash" parent ="Theme.AppCompat.Light.NoActionBar">
     <item name="android:windowBackground">@drawable/splash</item>
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:windowFullscreen">true</item>
+  </style>
+
+  <style name="MyTheme.SLoad" parent ="Theme.AppCompat.Light.NoActionBar">
+    <item name="android:windowBackground">@drawable/splash_load</item>
     <item name="android:windowNoTitle">true</item>
     <item name="android:windowFullscreen">true</item>
   </style>
