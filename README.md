@@ -3,3 +3,5 @@
 final demo
 
 Description will be updated later
+
+![Alt text](/appicon.png)
