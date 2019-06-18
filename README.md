@@ -15,6 +15,8 @@ Description will be updated later
 위는 애플리케이션 모양이다.
 #
 #### 2. 실행화면 참조
+{% youtube B4grkp8ados %}
+#
 {% include media.html id="B4grkp8ados" %}
 #
 <html>
