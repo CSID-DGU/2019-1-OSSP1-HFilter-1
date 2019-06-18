@@ -13,3 +13,12 @@ Description will be updated later
 ![Alt text](/appicon.png)
 
 위는 애플리케이션 모양이다.
+#
+#### 2. 실행화면 참조
+{% include media.html id="B4grkp8ados" %}
+#
+<html>
+<body>
+<iframe width="640" height="360" src="https://www.youtube.com/embed/B4grkp8ados" frameborder="0" gesture="media" allowfullscreen=""></iframe>
+</body>
+</html>
