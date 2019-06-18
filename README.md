@@ -4,7 +4,7 @@ final demo
 
 Description will be updated later
 
-<pre><code>
+
 
 ## 사용방법
 
@@ -13,5 +13,3 @@ Description will be updated later
 ![Alt text](/appicon.png)
 
 위는 애플리케이션 모양이다.
-
-</code></pre>
