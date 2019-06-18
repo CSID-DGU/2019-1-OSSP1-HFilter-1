@@ -15,6 +15,22 @@ Description will be updated later
 위는 애플리케이션 모양이다.
 #
 #### 2. 실행화면 참조
+[![Video Label](http://img.youtube.com/vi/B4grkp8ados/0.jpg)](https://youtu.be/B4grkp8ados)
+
+위 화면을 클릭하면 동영상으로 넘어갑니다.
+#
+
+
+<!--
+[^1]: {% youtube B4grkp8ados %}
+#
+{% include media.html id="B4grkp8ados" %}
+#
+<html>
+<body>
+<iframe width="640" height="360" src="https://www.youtube.com/embed/B4grkp8ados" frameborder="0" gesture="media" allowfullscreen=""></iframe>
+</body>
+</html>
 {% youtube B4grkp8ados %}
 #
 {% include media.html id="B4grkp8ados" %}
@@ -24,3 +40,4 @@ Description will be updated later
 <iframe width="640" height="360" src="https://www.youtube.com/embed/B4grkp8ados" frameborder="0" gesture="media" allowfullscreen=""></iframe>
 </body>
 </html>
+-->
