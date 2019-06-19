@@ -5,7 +5,7 @@ final demo
 
 Description will be updated later
 -->
-
+페이스북 데이터 학습으로 개인 사용자 분석 및 맞춤 페이지 추천
 
 ## 사용방법
 
