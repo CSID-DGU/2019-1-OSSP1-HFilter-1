@@ -1,6 +1,8 @@
 # 동국대학교 OSSP 2019-1학기 1조 HFilter
 
-# 1 to 26
+# 1부터 26은 data1~data26
+# data14는 data141~data1424 세부사항 별개로 존재
+# 27부터 50은 data141부터 data1424를 위한 것
 # 추출한 명사들을 한 군데에 모아서 중복없이 저장한다.
 dic = {}
 for i in range (1, 27):
@@ -25,6 +27,7 @@ for i in range (1, 27):
 
 Path = "./datalist/extract/kindOfNouns(sorted).txt"
 Path2 = "./datalist/extract/kindOfNouns.txt"
+
 kindOfNouns_sorted = open(Path, "w", encoding='UTF-8')
 kindOfNouns = open(Path2, "w", encoding='UTF-8')
 

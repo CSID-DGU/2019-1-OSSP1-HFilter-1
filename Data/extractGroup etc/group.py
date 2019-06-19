@@ -52,7 +52,9 @@ while True:
         comma = line[comma:].find(',')
         if comma == -1: break
 
-    value = line[n+1:].split()
+    # default는 빈칸 기준으로 나누는 것
+    # ex) 연예: ㅇㅇ 이므로 n+2부터 시작
+    value = line[n+2:].split()
     catagory[key] = value
 
 print(catagory.items())
@@ -66,12 +68,23 @@ for key, value in group.items():
     for v in range (0, len(value)):
         case[value[v]] = key
 
+# 1부터 26은 data1~data26
+# data14는 data141~data1424 세부사항 별개로 존재
+# 27부터 50은 data141부터 data1424를 위한 것
 # group별로 가장 많은 순서로 저장한다.
-for i in range (1, 27):
+for i in range (1, 51):
     readPath = "./datalist/extract/data" + str(i) + "extract.txt"
+    if i>=27:
+        ii = i - 26
+        readPath = "./datalist/extract/data14/data14" + str(ii) + "extract.txt"
+
     f = open(readPath, "r", encoding='UTF-8')
 
     writePath = "./datalist/group/data" + str(i) + "group.txt"
+    if i>=27:
+        ii = i - 26
+        writePath = "./datalist/group/data14/data14" + str(ii) + "group.txt"
+
     f2 = open(writePath, "w", encoding='UTF-8')
 
     # "소셜" : [10, "인스타그램", 7, "그램", 3]
@@ -112,8 +125,12 @@ for i in range (1, 27):
 
 # group 전체 요약 저장
 groupWrite = {}
-for i in range (1, 27):
+for i in range (1, 51):
     readPath = "./datalist/group/data" + str(i) + "group.txt"
+    if i>=27:
+        ii = i - 26
+        readPath = "./datalist/group/data14/data14" + str(ii) + "group.txt"
+
     f = open(readPath, "r", encoding='UTF-8')
 
     for j in range (0, 3):
@@ -130,14 +147,21 @@ for i in range (1, 27):
 # 1: 성별 라이프 소셜
 # 2: 글 성별 음식
 # 이런식으로 저장된다.
-groupPath = "./datalist/group/datagroup.txt"
+#groupPath = "./datalist/group/datagroup.txt"
+groupPath = "./datalist/group/datagroup_+14.txt"
 f = open(groupPath, "w", encoding="UTF-8")
 for key, value in groupWrite.items():
-    f.write(str(key) + ":")
+    # data141~data1424는 따로 구분
+    if key == 27:
+        f.write("----------\n")
+    if key >= 27:
+        f.write(str(14) + str(key-26) + ":")
+    else:
+        f.write(str(key) + ":")
+
     for num in range (0, len(value)):
         f.write(" " + value[num])
     f.write("\n")
 f.close()
-
 
 

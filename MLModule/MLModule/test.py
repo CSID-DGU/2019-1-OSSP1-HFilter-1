@@ -626,9 +626,151 @@ def testcode9():
     file.close()
     out.close()
 
+def testcode10():
+    path = input("Enter the base path : ")
+
+    import MLModule
+    label = MLModule.makeLabel(path,10)
+
+    path = input("Enter the cluster path : ")
+
+    for k in range(1,100):
+        cluster = MLModule.makeLabel(path+str(k)+".txt")
+        if len(cluster)==0:
+            continue
+
+        max=int(cluster[0,1])
+        cVec=[]
+        for i in range(0, len(label)):
+
+            flag=False
+            for j in range(0, len(cluster)):
+                if label[i] in cluster[j]:
+                    cVec.append(int(cluster[j,1])/max)
+                    flag=True
+                    break
+            if flag==False:
+                cVec.append(0)
+
+        out=open(path+str(k)+"vector.txt", 'w', encoding='utf-8')
+        for i in range(0,len(cVec)):
+            out.write(str(round(cVec[i],2))+" ")
+        out.close()
+
+def testcode11():
+    path = input("Enter the base path : ")
+    import MLModule
+    label = MLModule.makeLabel(path,10)
+
+    cVecs=[]
+    path = input("Enter the cluster path : ")
+    for k in range(1,100):
+        file = open(path+str(k)+"vector.txt", 'r', encoding='utf-8')
+        tmp=[]
+        line=file.readline()
+
+        while len(line)!=0:
+            ptr=line.find(" ")
+            tmp.append(float(line[:ptr]))
+            line=line[ptr+1:]
+
+        cVecs.append(tmp)
+
+    import copy
+
+    while True:
+        ind = input("Enter the individual path : ")
+        indiv = MLModule.makeLabel(ind)
+        if len(indiv)==0:
+            continue
+    
+        iVec=[]
+        for i in range(0, len(label)):
+
+            flag=False
+            for j in range(0, len(indiv)):
+                if label[i] in indiv[j]:
+                    iVec.append(1)
+                    flag=True
+                    break
+            if flag==False:
+                iVec.append(0)
+
+        small=10000
+        index=-1
+        cIns=copy.deepcopy(cVecs)
+        for k in range(len(cIns)):
+            sum=0
+            for i in range(len(cIns[k])):
+                cIns[k][i]=cIns[k][i]-iVec[i]
+                cIns[k][i]=cIns[k][i]*cIns[k][i]
+                sum+=cIns[k][i]
+
+            if sum<small:
+                small=sum
+                index=k
+
+        print(index)
+        suggest=MLModule.makeLabel(path+str(index)+"output.txt")
+        print("you may also like")
+        cnt=0
+        for i in range(len(suggest)):
+            if suggest[cnt,0][:suggest[cnt,0][:-1].rfind(' ')] in indiv[:,0]:
+                continue
+
+            print(suggest[cnt,0][:suggest[cnt,0][:-1].rfind(' ')])
+            cnt+=1
+            if cnt==3:
+                break
+
+def testcode12():
+    # Get module path
+    path = input("Enter the module path : ")
+
+    wDics=[]
+    for k in range(1,100):
+        wDic = MLModule.makeModule(path+str(k)+"module.txt")
+        if len(wDic) == 0:
+            print("Wrong Input")
+            return
+        wDics.append(wDic)
+
+    while True:
+        # Get human path
+        ind = input("Enter a human to filter : ")
+        tmp = MLModule.makeIndiv(ind)
+        hList = (list)(tmp.values())
+        if len(hList) == 0:
+            print("Nothing to filter")
+            continue
+
+        big=-10000
+        index=-1
+        for k in range(len(wDics)):
+            w = MLModule.dtrHuman(hList, wDics[k])
+            #print(str(w)+" ", end='')
+            if w>big:
+                big=w
+                index=k
+
+       
+        print("suggested cluster :"+str(index+1))
+        suggest=MLModule.makeLabel(path+str(index+1)+"output.txt")
+        print("you may also like")
+        cnt=0
+        for i in range(len(suggest)):
+            like=suggest[i,0][:suggest[i,0][:-1].rfind(' ')]
+            if like in hList[0].tolist():
+                continue
+
+            print(like)
+            cnt+=1
+            if cnt==3:
+                break
+        print()
+
 if __name__ == '__main__':
-    #testcode8()
-    testcode9()
+    testcode12()
 
     #import numpy as np
     #from scipy.cluster.vq import vq, kmeans, whiten
@@ -644,10 +786,9 @@ if __name__ == '__main__':
     #path = []
     #path.append(input("Insert Base Path : "))
     #path.append(input("Insert Compare Path : "))
-
     ## Learning
-    #for i in range(1,25):
-    #    err=MLModule.learningModule(path[0], path[1]+str(i)+".txt", 10, 100, 0, False)
+    #for i in range(1,100):
+    #    err=MLModule.learningModule(path[0], path[1]+str(i)+".txt", 1, 100, 0, False)
     #    if err==-1:
     #        print(path[1]+str(i)+".txt Error")
 

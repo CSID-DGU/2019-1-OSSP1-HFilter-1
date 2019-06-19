@@ -17,10 +17,17 @@ def strip_e(st):
     RE_EMOJI = re.compile('[\U00010000-\U0010ffff]', flags=re.UNICODE)
     return RE_EMOJI.sub(r'', st)
 
-# 1부터 26 (27은 포함 X)
+# 1부터 26은 data1~data26
+# data14는 data141~data1424 세부사항 별개로 존재
+# 27부터 50은 data141부터 data1424를 위한 것
 # 중복생성된 문자열들 가지고 명사 추출
-for i in range (1, 27):
+for i in range (1, 51):
     readPath = "./datalist/modify/data" + str(i) + "modify.txt"
+
+    if i>=27:
+        ii = i - 26
+        readPath = "./datalist/modify/data14/data14" + str(ii) + "modify.txt"
+
     f3 = open(readPath, "r", encoding='UTF-8')
     # 파일 전체를 읽는다.
     lines = f3.read()
@@ -101,6 +108,11 @@ for i in range (1, 27):
         check = check + 1
 
     extractPath = "./datalist/extract/data" + str(i) + "extract.txt"
+
+    if i>=27:
+        ii = i - 26
+        extractPath  = "./datalist/extract/data14/data14" + str(ii) + "extract.txt"
+
     f4 = open(extractPath, "w", encoding='UTF-8')
     for set in keySet:
         f4.write(set['key'] + " " + str(set['num']) + "\n")
